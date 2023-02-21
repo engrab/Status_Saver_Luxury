@@ -1,0 +1,98 @@
+<resources>
+
+    <!-- App Name -->
+    <string name="app_name"> Status Saver:Save Video Status</string>
+
+
+    <!-- Other Text -->
+    <string name="select_country">Select a county</string>
+    <string name="message_number_empty">Please enter number</string>
+    <string name="message_number_error">Number not registered correctly</string>
+    <string name="no_result_found">Results not found</string>
+    <string name="rateUsText">How was Your experience with us?</string>
+    <string name="rateUsButtonText">never</string>
+    <string name="rateUs">rate us</string>
+    <string name="chatText">Chat Text</string>
+    <string name="to">To</string>
+    <string name="emoji">Emoji</string>
+    <string name="transform">Transform</string>
+    <string name="repeatText">Repeat Text</string>
+    <string name="noOfRepeatText">Number of Repeat Text</string>
+    <string name="repeat">Repeat</string>
+    <string name="newLineOn">Move on Next Line</string>
+    <string name="note">Note: Number of Repeater Text Limit 10000</string>
+    <string name="directChatInfo">This Application uses WhatsApp services to start a conversation with any number included.</string>
+    <string name="directChatInfoNote">Note: it Does not store the number</string>
+    <string name="enterMessage">Enter Message </string>
+    <string name="enterNumber">Enter Number</string>
+    <string name="sends">SEND</string>
+
+
+    <string name="text_repeater">Text Repeater</string>
+    <string name="stylish_font">Stylish Font</string>
+    <string name="whats_web">Whats-Web</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="share_app">Share App</string>
+    <string name="rate_us">Rate us</string>
+    <string name="text_emoji">Text Emoji</string>
+    <string name="navigation_drawer_open">Open Drawer</string>
+    <string name="navigation_drawer_close">Close Drawer</string>
+    <!-- ADMOB SETUP IDS -->
+
+    <string name="permission">Click on this button and Allow permission to access your status</string>
+    <string name="allow_storage_access">Allow storage access</string>
+    <string name="step_1">Step 1</string>
+    <string name="first_step">Tap on icon to open Whatsapp and First you have to see Status from Whatsapp</string>
+    <string name="step_2">Step 2</string>
+    <string name="second_step">Once you seen Status in Whatsapp then open this application</string>
+    <string name="step_3">Step 3</string>
+    <string name="step_three">Your seen status will be here in this app and from here you can Download and Share</string>
+
+
+    <string name="dl_started" translatable="false">Download started</string>
+    <string name="downloading" translatable="false">"Please wait...Downloading Media"</string>
+
+    <!--tiktok-->
+    <string name="info_status">Info Whatsapp Status</string>
+
+
+    <string name="search_hint">Search…</string>
+    <string name="direct_chat">Direct Chat</string>
+    <string name="enter_your_text_here">Enter Your Text Here</string>
+    <string name="ic_setting">Setting</string>
+    <string name="new_line_on">New Line On</string>
+    <string name="new_line_off">New Line Off</string>
+    <string name="save_status_in_folder">Save Status in Folder</string>
+    <string name="about">About</string>
+    <string name="tutorial">Tutorial</string>
+
+    // ASCII category
+    <string name="good_morning">Good Morning</string>
+    <string name="good_night">Good Night</string>
+    <string name="thanks_you">Thanks You</string>
+    <string name="Love">Love</string>
+    <string name="happy">Happy</string>
+    <string name="greetings">Greetings</string>
+    <string name="animals">Animals</string>
+    <string name="dog">Dog</string>
+    <string name="cat">Cat</string>
+    <string name="heart">Heart</string>
+    <string name="confused">Confused</string>
+    <string name="cute">Cute</string>
+    <string name="sad">Sad</string>
+    <string name="dance">Dance</string>
+    <string name="eating">Eating</string>
+    <string name="hug">Hug</string>
+    <string name="disapporval">Disapproval</string>
+    <string name="laughing">Laughing</string>
+    <string name="angry">Angry</string>
+    <string name="thinking">Thinking</string>
+
+    <string name="enter_message">Please enter message</string>
+    <string name="enter_text_here">Enter text here</string>
+    <string name="copy">Copied to Clipboard</string>
+    <string name="convert_text">Convert text before copy</string>
+    <string name="convert_share">Convert text to share</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
+</resources>

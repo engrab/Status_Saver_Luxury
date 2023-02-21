@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand_red">#ffd51826</color>
+
+    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorPrimary">#006838</color>
+    <color name="colorPrimaryDark">#004324</color>
+
+    <color name="white">#ffffffff</color>
+    <color name="statusTextColor">#2B2A2A</color>
+    <color name="error_view_text_light">#666666</color>
+
+    <!--UI Colors-->
+    <color name="main_bg_home_color">#333333</color>
+    <color name="home_btn_txt">#000000</color>
+    <color name="download_btn_text_color">#fff</color>
+    <color name="help_text_color">#000</color>
+
+
+    <color name="black">#000000</color>
+    <color name="browser_actions_bg_grey">#f5f5f5</color>
+    <color name="browser_actions_divider_color">#1e000000</color>
+    <color name="browser_actions_text_color">#de000000</color>
+    <color name="browser_actions_title_color">#646464</color>
+</resources>

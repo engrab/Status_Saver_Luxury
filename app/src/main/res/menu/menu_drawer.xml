@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/groupHome"
+        android:checkableBehavior="single">
+        <item android:title="Home">
+            <menu>
+                <item
+                    android:id="@+id/actionWhatsapp"
+                    android:icon="@drawable/ic_btm_whatsapp"
+                    android:title="WhatsApp" />
+
+                <item
+                    android:id="@+id/actionWhatsappB"
+                    android:icon="@drawable/ic_btm_wab"
+                    android:title="WA Business" />
+
+                <item
+                    android:id="@+id/actionSaved"
+                    android:icon="@drawable/ic_saved"
+                    android:title="Saved" />
+
+
+            </menu>
+        </item>
+    </group>
+
+    <group
+        android:id="@+id/groupFeatures"
+        android:checkableBehavior="single">
+        <item android:title="Features">
+            <menu>
+                <item
+                    android:id="@+id/actionWhatsScan"
+                    android:background="?attr/actionBarItemBackground"
+                    android:icon="@drawable/ic_scan"
+                    android:title="@string/whats_web" />
+
+                <item
+                    android:id="@+id/actionDirectChat"
+                    android:background="?attr/actionBarItemBackground"
+                    android:icon="@drawable/ic_baseline_send_24"
+                    android:title="@string/direct_chat" />
+
+
+                <item
+                    android:id="@+id/actionAscii"
+                    android:icon="@drawable/ic_sticker"
+                    android:title="Ascii" />
+
+                <item
+                    android:id="@+id/actionStylishFont"
+                    android:icon="@drawable/ic_stylish_font"
+                    android:background="?attr/actionBarItemBackground"
+                    android:title="@string/stylish_font" />
+
+                <item
+                    android:id="@+id/actionTxtRepeater"
+                    android:background="?attr/actionBarItemBackground"
+                    android:icon="@drawable/ic_text_repeater"
+                    android:title="@string/text_repeater" />
+                <item
+                    android:id="@+id/actionTxtEmoji"
+                    android:background="?attr/actionBarItemBackground"
+                    android:icon="@drawable/ic_text_emoji"
+                    android:title="@string/text_emoji" />
+
+
+            </menu>
+        </item>
+    </group>
+
+</menu>
