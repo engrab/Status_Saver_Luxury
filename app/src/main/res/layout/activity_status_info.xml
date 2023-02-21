@@ -26,6 +26,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <LinearLayout
+        android:id="@+id/llAds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="bottom"
+        android:orientation="vertical" />
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -186,12 +193,6 @@
     </ScrollView>
 
 
-    <LinearLayout
-        android:id="@+id/llAds"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="bottom"
-        android:orientation="vertical" />
+
 
 </LinearLayout>

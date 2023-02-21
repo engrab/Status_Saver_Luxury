@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_bg_home"
     tools:context=".Status.activities.PreviewActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -28,11 +29,24 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <LinearLayout
+        android:id="@+id/llAds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appBar"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        android:orientation="vertical" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appBar"
-        android:background="@drawable/main_bg_home">
+        android:layout_below="@+id/llAds"
+        android:background="@drawable/main_bg_home"
+        >
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
@@ -47,7 +61,7 @@
             android:id="@+id/bottomLay"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
-            android:layout_above="@+id/banner_container"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:gravity="center"
@@ -124,6 +138,5 @@
 
         </LinearLayout>
 
-        <include layout="@layout/lay_banner_ad" />
     </RelativeLayout>
 </RelativeLayout>

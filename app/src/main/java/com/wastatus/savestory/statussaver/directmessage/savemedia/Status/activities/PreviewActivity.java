@@ -157,7 +157,7 @@ public class PreviewActivity extends AppCompatActivity {
 
         if (AdmobAdsManager.isAdmob) {
 
-            adView = AdmobAdsManager.banner(this, findViewById(R.id.banner_container));
+            adView = AdmobAdsManager.banner(this, binding.llAds);
         }
 
     }
@@ -184,30 +184,6 @@ public class PreviewActivity extends AppCompatActivity {
         if (adView != null) {
             adView.resume();
         }
-    }
-
-    void delete(int currentItem) {
-        if (imageList.size() > 0 && binding.viewPager.getCurrentItem() < imageList.size()) {
-            currentItem = binding.viewPager.getCurrentItem();
-        }
-        imageList.remove(binding.viewPager.getCurrentItem());
-        fullscreenImageAdapter = new FullscreenImageAdapter(PreviewActivity.this, imageList);
-        binding.viewPager.setAdapter(fullscreenImageAdapter);
-
-        Intent intent = new Intent();
-        setResult(10, intent);
-
-        if (imageList.size() > 0) {
-            binding.viewPager.setCurrentItem(currentItem);
-        } else {
-            finish();
-        }
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
     }
 
 }

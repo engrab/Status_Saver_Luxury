@@ -49,7 +49,7 @@
                 <item
                     android:id="@+id/actionAscii"
                     android:icon="@drawable/ic_sticker"
-                    android:title="Ascii" />
+                    android:title="@string/ascii_face" />
 
                 <item
                     android:id="@+id/actionStylishFont"

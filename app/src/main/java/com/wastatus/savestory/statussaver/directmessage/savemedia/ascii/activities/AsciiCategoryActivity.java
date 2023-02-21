@@ -9,6 +9,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.ads.AdView;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.adapters.AsciCategoryAdapter;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.model.ListModel;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
@@ -22,7 +24,7 @@ public class AsciiCategoryActivity extends AppCompatActivity {
     List<ListModel> list;
 
     private ActivityCategoryAsciiBinding binding;
-
+    AdView adView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,11 @@ public class AsciiCategoryActivity extends AppCompatActivity {
         getList();
         binding.simpleGridView.setAdapter(new AsciCategoryAdapter(this, list));
         binding.simpleGridView.setOnItemClickListener(new simpleGridListener());
+
+        if (AdmobAdsManager.isAdmob){
+
+            adView = AdmobAdsManager.banner(this, binding.llAds);
+        }
 
     }
 
@@ -72,5 +79,29 @@ public class AsciiCategoryActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
 
 }

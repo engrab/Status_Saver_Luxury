@@ -93,6 +93,7 @@
     <string name="copy">Copied to Clipboard</string>
     <string name="convert_text">Convert text before copy</string>
     <string name="convert_share">Convert text to share</string>
+    <string name="ascii_face">Ascii Face</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>
