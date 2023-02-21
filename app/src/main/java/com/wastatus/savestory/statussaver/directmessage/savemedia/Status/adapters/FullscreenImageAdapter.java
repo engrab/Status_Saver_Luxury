@@ -53,7 +53,6 @@ public class FullscreenImageAdapter extends PagerAdapter {
 
 
                 if (AdmobAdsManager.isAdmob) {
-                    AdmobAdsManager.counter++;
 
                     AdmobAdsManager.showInterAd(activity, intent);
                 }else {

@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     AdView adView;
     String[] permissionsList = new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    ProgressDialog progressDialog;
+
     private MyFileObserver fileObserver;
 
 
@@ -112,11 +112,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         binding.navView.setNavigationItemSelectedListener(this);
 
-        this.progressDialog = new ProgressDialog(this);
-        this.progressDialog.setMessage("Loading Stickers...");
-        this.progressDialog.setCancelable(false);
+
 
         if (AdmobAdsManager.isAdmob) {
+            AdmobAdsManager.loadInterstitial(MainActivity.this);
 
             adView = AdmobAdsManager.banner(this, binding.appBarMain.llAds);
         }
@@ -333,7 +332,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent8 = new Intent(MainActivity.this, AsciiCategoryActivity.class);
 
                 if (AdmobAdsManager.isAdmob) {
-                    AdmobAdsManager.counter++;
 
                     AdmobAdsManager.showInterAd(this, intent8);
                 } else {
@@ -346,7 +344,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(MainActivity.this, ScanWhatsappActivity.class);
 
                 if (AdmobAdsManager.isAdmob) {
-                    AdmobAdsManager.counter++;
 
                     AdmobAdsManager.showInterAd(this, intent);
                 } else {
@@ -360,7 +357,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent1 = new Intent(MainActivity.this, ChatDirectActivity.class);
 
                 if (AdmobAdsManager.isAdmob) {
-                    AdmobAdsManager.counter++;
 
                     AdmobAdsManager.showInterAd(this, intent1);
                 } else {
@@ -375,7 +371,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent2 = new Intent(MainActivity.this, StylishFontsActivity.class);
 
                 if (AdmobAdsManager.isAdmob) {
-                    AdmobAdsManager.counter++;
 
                     AdmobAdsManager.showInterAd(this, intent2);
                 } else {
@@ -388,7 +383,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent3 = new Intent(MainActivity.this, TextRepeaterActivity.class);
 
                 if (AdmobAdsManager.isAdmob) {
-                    AdmobAdsManager.counter++;
 
                     AdmobAdsManager.showInterAd(this, intent3);
                 } else {
@@ -401,7 +395,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent4 = new Intent(MainActivity.this, TextToEmojiActivity.class);
 
                 if (AdmobAdsManager.isAdmob) {
-                    AdmobAdsManager.counter++;
 
                     AdmobAdsManager.showInterAd(this, intent4);
                 } else {
@@ -415,26 +408,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return false;
 
-    }
-
-
-    private void rateApp() {
-        android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(this);
-        View dialogView = getLayoutInflater().inflate(R.layout.rate_dialog, null);
-        dialogBuilder.setView(dialogView);
-        Button rate = dialogView.findViewById(R.id.btn_rate_us);
-        Button cancel = dialogView.findViewById(R.id.btnCancel);
-        final android.app.AlertDialog alertDialog = dialogBuilder.create();
-        rate.setOnClickListener(v -> {
-            try {
-                startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
-            } catch (ActivityNotFoundException e) {
-                startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
-            }
-            alertDialog.cancel();
-        });
-        cancel.setOnClickListener(v -> alertDialog.cancel());
-        alertDialog.show();
     }
 
 

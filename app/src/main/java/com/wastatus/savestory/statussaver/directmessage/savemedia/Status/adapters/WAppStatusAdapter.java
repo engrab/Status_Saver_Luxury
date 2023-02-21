@@ -65,7 +65,6 @@ public class WAppStatusAdapter extends RecyclerView.Adapter<WAppStatusAdapter.Vi
                 Utils.copyFileInSavedDir(activity, dataModel.getFilePath());
                 Toast.makeText(activity, "Saved successfully!", Toast.LENGTH_LONG).show();
                 if (AdmobAdsManager.isAdmob) {
-                    AdmobAdsManager.counter++;
 
                     AdmobAdsManager.showInterAd((Activity) activity, null);
                 }

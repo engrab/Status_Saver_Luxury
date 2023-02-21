@@ -91,7 +91,6 @@ public class SettingActivity extends AppCompatActivity {
         Intent intent = new Intent(SettingActivity.this, PrivacyActivity.class);
 
         if (AdmobAdsManager.isAdmob) {
-            AdmobAdsManager.counter++;
 
             AdmobAdsManager.showInterAd(this, intent);
         } else {
@@ -102,7 +101,6 @@ public class SettingActivity extends AppCompatActivity {
         Intent intent = new Intent(SettingActivity.this, InfoStatusActivity.class);
 
         if (AdmobAdsManager.isAdmob) {
-            AdmobAdsManager.counter++;
 
             AdmobAdsManager.showInterAd(this, intent);
         } else {

@@ -54,9 +54,11 @@ public class AdmobAdsManager {
     }
 
     public static void showInterAd(final Activity context, final Intent intent) {
-        if (counter == 4 && mInterstitialAd != null) {
-            counter = 1;
+        if (counter % 2 == 0 && mInterstitialAd != null) {
+
             mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+
+
                 @Override
                 public void onAdDismissedFullScreenContent() {
                     // Called when fullscreen content is dismissed.
@@ -83,14 +85,14 @@ public class AdmobAdsManager {
             });
             mInterstitialAd.show(context);
         } else {
-            if (counter == 4){
-                counter = 1;
-            }
+
             if (mInterstitialAd == null){
                 loadInterstitial(context);
             }
             startActivity(context, intent);
         }
+
+        counter++;
     }
 
 

@@ -9,9 +9,6 @@
     <string name="message_number_empty">Please enter number</string>
     <string name="message_number_error">Number not registered correctly</string>
     <string name="no_result_found">Results not found</string>
-    <string name="rateUsText">How was Your experience with us?</string>
-    <string name="rateUsButtonText">never</string>
-    <string name="rateUs">rate us</string>
     <string name="chatText">Chat Text</string>
     <string name="to">To</string>
     <string name="emoji">Emoji</string>
@@ -64,7 +61,6 @@
     <string name="new_line_off">New Line Off</string>
     <string name="save_status_in_folder">Save Status in Folder</string>
     <string name="about">About</string>
-    <string name="tutorial">Tutorial</string>
 
     // ASCII category
     <string name="good_morning">Good Morning</string>

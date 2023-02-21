@@ -20,14 +20,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if (AdmobAdsManager.isAdmob) {
             AdmobAdsManager.loadInterstitial(this);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    showInterstitialAds();
-                }
-            }, 2500);
-        }else {
-            gotoHomeScreen();
+
         }
 
 
@@ -58,6 +51,21 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InterstitialAd interstitial = AdmobAdsManager.getInterstitial();
+                if (interstitial != null){
+
+                    showInterstitialAds();
+
+                }else {
+                    gotoHomeScreen();
+                }
+            }
+        }, 2500);
+
 
 
     }

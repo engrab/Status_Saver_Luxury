@@ -91,7 +91,6 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
             intent.putExtra("statusdownload", "download");
 
             if (AdmobAdsManager.isAdmob) {
-                AdmobAdsManager.counter++;
 
                 AdmobAdsManager.showInterAd(activity, intent);
             }else {

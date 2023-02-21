@@ -47,7 +47,6 @@ public class PreviewActivity extends AppCompatActivity {
 
 
                         if (AdmobAdsManager.isAdmob) {
-                            AdmobAdsManager.counter++;
 
                             AdmobAdsManager.showInterAd(PreviewActivity.this, null);
                         }
@@ -138,7 +137,6 @@ public class PreviewActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
 
                 if (AdmobAdsManager.isAdmob) {
-                    AdmobAdsManager.counter++;
 
                     AdmobAdsManager.showInterAd(PreviewActivity.this, null);
                 }

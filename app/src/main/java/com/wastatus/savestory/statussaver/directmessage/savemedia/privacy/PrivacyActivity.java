@@ -12,7 +12,7 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.Ac
 
 
 public class PrivacyActivity extends AppCompatActivity {
-    public static String privacyPolicy = "https://sites.google.com/view/centerspotsolutions/home";
+    public static String privacyPolicy = "https://sites.google.com/view/toolshub-privacypolicy/home";
     private ActivityPrivacyBinding binding;
 
     @Override
