@@ -8,12 +8,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activities.InfoStatusActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivitySettingBinding;
@@ -47,9 +44,7 @@ public class SettingActivity extends AppCompatActivity {
 
         getVersionName();
 
-        binding.llInfo.setOnClickListener(v -> {
-            goToStatus();
-        });
+
 
         binding.llShare.setOnClickListener(v -> {
            shareApp();
@@ -89,16 +84,6 @@ public class SettingActivity extends AppCompatActivity {
 
     private void goToPrivacy(){
         Intent intent = new Intent(SettingActivity.this, PrivacyActivity.class);
-
-        if (AdmobAdsManager.isAdmob) {
-
-            AdmobAdsManager.showInterAd(this, intent);
-        } else {
-            startActivity(intent);
-        }
-    }
-    private void goToStatus(){
-        Intent intent = new Intent(SettingActivity.this, InfoStatusActivity.class);
 
         if (AdmobAdsManager.isAdmob) {
 

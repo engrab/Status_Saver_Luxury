@@ -33,6 +33,7 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.Fr
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 
 public class WAStatusFragment extends Fragment {
@@ -57,10 +58,10 @@ public class WAStatusFragment extends Fragment {
 
         binding.llAccess.setOnClickListener(v -> {
 
-            if (Utils.appInstalledOrNot(getContext(), "com.whatsapp")) {
-                StorageManager sm = (StorageManager) getActivity().getSystemService(Context.STORAGE_SERVICE);
+            if (Utils.appInstalledOrNot(Objects.requireNonNull(getContext()), "com.whatsapp")) {
+                StorageManager sm = (StorageManager) Objects.requireNonNull(getActivity()).getSystemService(Context.STORAGE_SERVICE);
 
-                Intent intent = null;
+                Intent intent;
                 String statusDir = getWAFolder();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     intent = sm.getPrimaryStorageVolume().createOpenDocumentTreeIntent();

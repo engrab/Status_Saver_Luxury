@@ -62,52 +62,11 @@
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
                 android:src="@drawable/ic_launcher"
+                android:layout_margin="10dp"
                 android:layout_gravity="center"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:layout_gravity="center"
-                android:gravity="center"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="5dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_info"/>
-
-                <LinearLayout
-                    android:id="@+id/llInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/info_status" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="How Save Status. Tap and view info" />
-
-
-                </LinearLayout>
             </LinearLayout>
 
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/browser_actions_divider_color" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -117,7 +76,6 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="5dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_folder"/>
 
@@ -130,11 +88,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/TextHeading"
                         android:text="@string/save_status_in_folder" />
 
                     <TextView
                         android:id="@+id/tvSaveFolder"
                         android:layout_width="match_parent"
+                        style="@style/TextBody"
                         android:layout_height="wrap_content" />
 
 
@@ -156,7 +116,6 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="5dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_share_setting"/>
 
@@ -170,11 +129,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/TextHeading"
                         android:text="@string/share_app" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/TextBody"
                         android:text="Share this app with your friends and family member" />
 
 
@@ -195,7 +156,6 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="5dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_rating"/>
 
@@ -209,11 +169,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/TextHeading"
                         android:text="@string/rate_us" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/TextBody"
                         android:text="Please support us by your rating" />
 
 
@@ -235,7 +197,6 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="5dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_privacy"/>
 
@@ -249,11 +210,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/TextHeading"
                         android:text="@string/privacy_policy" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/TextBody"
                         android:text="Our Terms &amp; Conditions" />
 
 
@@ -274,7 +237,6 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="5dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_version"/>
 
@@ -287,11 +249,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/TextHeading"
                         android:text="@string/about" />
 
                     <TextView
                         android:id="@+id/tvVersion"
                         android:layout_width="match_parent"
+                        style="@style/TextBody"
                         android:layout_height="wrap_content" />
 
 

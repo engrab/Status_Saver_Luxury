@@ -1,7 +1,7 @@
 <resources>
 
     <!-- App Name -->
-    <string name="app_name"> Status Saver:Save Video Status</string>
+    <string name="app_name">Status Saver:Save Video Status</string>
 
 
     <!-- Other Text -->
@@ -38,12 +38,6 @@
 
     <string name="permission">Click on this button and Allow permission to access your status</string>
     <string name="allow_storage_access">Allow storage access</string>
-    <string name="step_1">Step 1</string>
-    <string name="first_step">Tap on icon to open Whatsapp and First you have to see Status from Whatsapp</string>
-    <string name="step_2">Step 2</string>
-    <string name="second_step">Once you seen Status in Whatsapp then open this application</string>
-    <string name="step_3">Step 3</string>
-    <string name="step_three">Your seen status will be here in this app and from here you can Download and Share</string>
 
 
     <string name="dl_started" translatable="false">Download started</string>
@@ -90,6 +84,10 @@
     <string name="convert_text">Convert text before copy</string>
     <string name="convert_share">Convert text to share</string>
     <string name="ascii_face">Ascii Face</string>
+    <string name="there_s_no_status">There\'s no status.</string>
+    <string name="copy_content">Copy Content</string>
+    <string name="delete_content">Delete Content</string>
+    <string name="share_content">Share Content</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

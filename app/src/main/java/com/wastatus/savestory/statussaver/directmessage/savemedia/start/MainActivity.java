@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String[] permissionsList = new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    private MyFileObserver fileObserver;
+//    private MyFileObserver fileObserver;
 
 
 
@@ -69,17 +69,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        if (Utils.appInstalledOrNot(this, "com.whatsapp.w4b")) {
-
-            String filePath = getWhatsappBusinessFolder();
-            fileObserver = new MyFileObserver(filePath, getApplicationContext());
-            fileObserver.startWatching();
-        }
-        if (Utils.appInstalledOrNot(this, "com.whatsapp")) {
-            String filePath = getWhatsappFolder();
-            fileObserver = new MyFileObserver(filePath, getApplicationContext());
-            fileObserver.startWatching();
-        }
+//        if (Utils.appInstalledOrNot(this, "com.whatsapp.w4b")) {
+//
+//            String filePath = getWhatsappBusinessFolder();
+//            fileObserver = new MyFileObserver(filePath, getApplicationContext());
+//            fileObserver.startWatching();
+//        }
+//        if (Utils.appInstalledOrNot(this, "com.whatsapp")) {
+//            String filePath = getWhatsappFolder();
+//            fileObserver = new MyFileObserver(filePath, getApplicationContext());
+//            fileObserver.startWatching();
+//        }
         FirebaseApp.initializeApp(this);
 
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (adView != null) {
             adView.destroy();
         }
-        fileObserver.stopWatching();
+//        fileObserver.stopWatching();
 
         super.onDestroy();
     }
