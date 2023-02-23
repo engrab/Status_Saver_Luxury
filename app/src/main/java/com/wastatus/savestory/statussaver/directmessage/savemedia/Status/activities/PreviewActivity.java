@@ -1,13 +1,17 @@
 package com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.viewpager.widget.ViewPager;
 
 
@@ -20,6 +24,7 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.U
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivityPreviewBinding;
 import com.google.android.gms.ads.AdView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class PreviewActivity extends AppCompatActivity {
@@ -81,11 +86,73 @@ public class PreviewActivity extends AppCompatActivity {
                         finish();
                     }
                     break;
+
+                case R.id.llDelete:
+                    if (imageList.size() > 0) {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(PreviewActivity.this, R.style.AlertDialogTheme);
+                        alertDialog.setTitle("Delete");
+                        alertDialog.setMessage("Sure to Delete this Image?");
+                        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                int currentItem = 0;
+
+                                if (path.equals("download")) {
+                                    File file = new File(imageList.get(binding.viewPager.getCurrentItem()).getFilePath());
+                                    if (file.exists()) {
+                                        boolean del = file.delete();
+                                        delete(currentItem);
+                                    }
+                                } else {
+                                    DocumentFile fromTreeUri = DocumentFile.fromSingleUri(PreviewActivity.this, Uri.parse(imageList.get(binding.viewPager.getCurrentItem()).getFilePath()));
+                                    if (fromTreeUri.exists()) {
+                                        boolean del = fromTreeUri.delete();
+                                        delete(currentItem);
+                                    }
+                                }
+                            }
+                        });
+                        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        alertDialog.show();
+
+
+                        if (AdmobAdsManager.isAdmob) {
+
+
+                            AdmobAdsManager.showInterAd(PreviewActivity.this, null);
+                        }
+
+                    } else {
+                        finish();
+                    }
                 default:
                     break;
             }
         }
     };
+    void delete(int currentItem) {
+        if (imageList.size() > 0 && binding.viewPager.getCurrentItem() < imageList.size()) {
+            currentItem = binding.viewPager.getCurrentItem();
+        }
+        imageList.remove(binding.viewPager.getCurrentItem());
+        fullscreenImageAdapter = new FullscreenImageAdapter(PreviewActivity.this, imageList);
+        binding.viewPager.setAdapter(fullscreenImageAdapter);
+
+        Intent intent = new Intent();
+        setResult(10, intent);
+
+        if (imageList.size() > 0) {
+            binding.viewPager.setCurrentItem(currentItem);
+        } else {
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,6 +175,7 @@ public class PreviewActivity extends AppCompatActivity {
         LinearLayout.LayoutParams btnParam = LayManager.setLinParams(PreviewActivity.this, 300, 100);
         binding.llSave.setLayoutParams(btnParam);
         binding.llShare.setLayoutParams(btnParam);
+        binding.llDelete.setLayoutParams(btnParam);
 
         imageList = getIntent().getParcelableArrayListExtra("images");
         position = getIntent().getIntExtra("position", 0);
@@ -119,6 +187,7 @@ public class PreviewActivity extends AppCompatActivity {
 
             binding.llSave.setVisibility(View.GONE);
             binding.llRepost.setVisibility(View.GONE);
+            binding.llDelete.setVisibility(View.VISIBLE);
         } else {
 
             binding.llSave.setVisibility(View.VISIBLE);
@@ -152,6 +221,7 @@ public class PreviewActivity extends AppCompatActivity {
         binding.llSave.setOnClickListener(clickListener);
         binding.llShare.setOnClickListener(clickListener);
         binding.llRepost.setOnClickListener(clickListener);
+        binding.llDelete.setOnClickListener(clickListener);
 
         if (AdmobAdsManager.isAdmob) {
 

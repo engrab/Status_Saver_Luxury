@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void viewpagerAndBottomNav() {
         binding.appBarMain.bottomNavigation.setOnNavigationItemSelectedListener(this);
         binding.navView.setNavigationItemSelectedListener(MainActivity.this);
-        binding.appBarMain.viewPager.setOffscreenPageLimit(1);
+//        binding.appBarMain.viewPager.setOffscreenPageLimit(3);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         binding.appBarMain.viewPager.setAdapter(viewPagerAdapter);
 

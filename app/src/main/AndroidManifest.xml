@@ -16,14 +16,6 @@
     <queries>
         <package android:name="com.whatsapp" />
         <package android:name="com.whatsapp.w4b" />
-        <package android:name="com.instagram.android" />
-        <package android:name="com.facebook.katana" />
-        <package android:name="com.instagram.android" />
-        <package android:name="com.twitter.android" />
-        <package android:name="com.zhiliaoapp.musically" />
-        <package android:name="com.roposo.android" />
-        <package android:name="in.mohalla.sharechat" />
-        <package android:name="video.like" />
     </queries>
 
     <application
@@ -42,7 +34,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="s">
         <activity
-            android:name="com.wastatus.savestory.statussaver.directmessage.savemedia.setting.SettingActivity"
+            android:name=".setting.SettingActivity"
             android:exported="false"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme">

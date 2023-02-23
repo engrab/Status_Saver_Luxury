@@ -59,8 +59,8 @@
                 android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:src="@drawable/ic_launcher"
                 android:layout_margin="10dp"
                 android:layout_gravity="center"/>

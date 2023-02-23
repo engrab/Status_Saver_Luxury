@@ -89,12 +89,14 @@ public class WAStatusFragment extends Fragment {
 
                 startActivityForResult(intent, REQUEST_ACTION_OPEN_DOCUMENT_TREE);
             } else {
-                Toast.makeText(getActivity(), "Please Install WhatsApp Business For Download Status!!!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Please Install WhatsApp For Download Status!!!!!", Toast.LENGTH_SHORT).show();
             }
 
 
         });
-
+        if (!SharedPrefs.getWATree(getActivity()).equals("")) {
+            populateGrid();
+        }
 
         return view;
     }
@@ -102,9 +104,7 @@ public class WAStatusFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!SharedPrefs.getWATree(getActivity()).equals("")) {
-            populateGrid();
-        }
+
     }
 
     @Override

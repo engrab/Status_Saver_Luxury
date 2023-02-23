@@ -60,7 +60,7 @@ public class WABusinessStatusFragment extends Fragment {
             if (Utils.appInstalledOrNot(Objects.requireNonNull(getContext()), "com.whatsapp.w4b")) {
                 StorageManager sm = (StorageManager) Objects.requireNonNull(getActivity()).getSystemService(Context.STORAGE_SERVICE);
 
-                Intent intent = null;
+                Intent intent;
                 String statusDir = getWhatsappBusinessFolder();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     intent = sm.getPrimaryStorageVolume().createOpenDocumentTreeIntent();
@@ -94,16 +94,16 @@ public class WABusinessStatusFragment extends Fragment {
 
         });
 
-
+        if (!SharedPrefs.getWBTree(getActivity()).equals("")) {
+            populateGrid();
+        }
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (!SharedPrefs.getWBTree(getActivity()).equals("")) {
-            populateGrid();
-        }
+
     }
 
     @Override
@@ -115,10 +115,8 @@ public class WABusinessStatusFragment extends Fragment {
             Uri uri = data.getData();
             Log.e("onActivityResult: ", "" + data.getData());
             try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    requireContext().getContentResolver()
-                            .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                }
+                requireContext().getContentResolver()
+                        .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             } catch (Exception e) {
                 e.printStackTrace();
             }

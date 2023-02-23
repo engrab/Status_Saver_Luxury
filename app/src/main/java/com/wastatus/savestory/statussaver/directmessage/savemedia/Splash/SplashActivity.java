@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Util;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.start.MainActivity;
 import com.google.android.gms.ads.AdError;
@@ -15,20 +16,27 @@ import com.google.android.gms.ads.interstitial.InterstitialAd;
 
 public class SplashActivity extends AppCompatActivity {
 
+    InterstitialAd interstitial;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (AdmobAdsManager.isAdmob) {
-            AdmobAdsManager.loadInterstitial(this);
+        if (Util.isNetworkAvailable(SplashActivity.this)) {
+            if (AdmobAdsManager.isAdmob) {
 
+                AdmobAdsManager.loadInterstitial(this);
+            }
+            else {
+                gotoHomeScreen();
+            }
+        }
+        else {
+            gotoHomeScreen();
         }
 
 
     }
 
     private void showInterstitialAds() {
-        InterstitialAd interstitial = AdmobAdsManager.getInterstitial();
-        if (interstitial != null) {
             interstitial.show(this);
             interstitial.setFullScreenContentCallback(new FullScreenContentCallback() {
                 @Override
@@ -43,26 +51,21 @@ public class SplashActivity extends AppCompatActivity {
                     gotoHomeScreen();
                 }
             });
-        } else {
-            gotoHomeScreen();
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                InterstitialAd interstitial = AdmobAdsManager.getInterstitial();
-                if (interstitial != null){
+        new Handler().postDelayed(() -> {
 
-                    showInterstitialAds();
+            interstitial = AdmobAdsManager.getInterstitial();
+            if (interstitial != null){
 
-                }else {
-                    gotoHomeScreen();
-                }
+                showInterstitialAds();
+
+            }else {
+                gotoHomeScreen();
             }
         }, 2500);
 
