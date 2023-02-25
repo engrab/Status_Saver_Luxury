@@ -88,6 +88,8 @@
     <string name="copy_content">Copy Content</string>
     <string name="delete_content">Delete Content</string>
     <string name="share_content">Share Content</string>
+    <string name="auto_save">Auto Save</string>
+    <string name="automatically_save_all_new_statuses">Automatically Save all New Statuses</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

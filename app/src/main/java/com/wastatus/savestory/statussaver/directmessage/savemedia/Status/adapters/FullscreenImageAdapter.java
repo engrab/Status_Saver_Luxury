@@ -37,19 +37,19 @@ public class FullscreenImageAdapter extends PagerAdapter {
         ImageView imageView = itemView.findViewById(R.id.imageView);
         ImageView ivPlay = itemView.findViewById(R.id.ivPlay);
 
-        if (!Utils.getBack(imageList.get(position).getFilePath(), "((\\.mp4|\\.webm|\\.ogg|\\.mpK|\\.avi|\\.mkv|\\.flv|\\.mpg|\\.wmv|\\.vob|\\.ogv|\\.mov|\\.qt|\\.rm|\\.rmvb\\.|\\.asf|\\.m4p|\\.m4v|\\.mp2|\\.mpeg|\\.mpe|\\.mpv|\\.m2v|\\.3gp|\\.f4p|\\.f4a|\\.f4b|\\.f4v)$)").isEmpty()) {
+        if (!Utils.getBack(imageList.get(position).getFilepath(), "((\\.mp4|\\.webm|\\.ogg|\\.mpK|\\.avi|\\.mkv|\\.flv|\\.mpg|\\.wmv|\\.vob|\\.ogv|\\.mov|\\.qt|\\.rm|\\.rmvb\\.|\\.asf|\\.m4p|\\.m4v|\\.mp2|\\.mpeg|\\.mpe|\\.mpv|\\.m2v|\\.3gp|\\.f4p|\\.f4a|\\.f4b|\\.f4v)$)").isEmpty()) {
             ivPlay.setVisibility(View.VISIBLE);
         } else {
             ivPlay.setVisibility(View.GONE);
         }
 
-        Glide.with(this.activity).load(imageList.get(position).getFilePath()).into(imageView);
+        Glide.with(this.activity).load(imageList.get(position).getFilepath()).into(imageView);
 
         imageView.setOnClickListener(view -> {
-            if (!Utils.getBack(imageList.get(position).getFilePath(), "((\\.mp4|\\.webm|\\.ogg|\\.mpK|\\.avi|\\.mkv|\\.flv|\\.mpg|\\.wmv|\\.vob|\\.ogv|\\.mov|\\.qt|\\.rm|\\.rmvb\\.|\\.asf|\\.m4p|\\.m4v|\\.mp2|\\.mpeg|\\.mpe|\\.mpv|\\.m2v|\\.3gp|\\.f4p|\\.f4a|\\.f4b|\\.f4v)$)").isEmpty()) {
+            if (!Utils.getBack(imageList.get(position).getFilepath(), "((\\.mp4|\\.webm|\\.ogg|\\.mpK|\\.avi|\\.mkv|\\.flv|\\.mpg|\\.wmv|\\.vob|\\.ogv|\\.mov|\\.qt|\\.rm|\\.rmvb\\.|\\.asf|\\.m4p|\\.m4v|\\.mp2|\\.mpeg|\\.mpe|\\.mpv|\\.m2v|\\.3gp|\\.f4p|\\.f4a|\\.f4b|\\.f4v)$)").isEmpty()) {
 
                 Intent intent = new Intent(activity, VideoPreviewActivity.class);
-                intent.putExtra("videoPath", imageList.get(position).getFilePath());
+                intent.putExtra("videoPath", imageList.get(position).getFilepath());
 
 
                 if (AdmobAdsManager.isAdmob) {

@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.WAppStatusAdapter;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.WhatsappStatusAdapter;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
@@ -39,7 +39,7 @@ public class WABusinessStatusFragment extends Fragment {
     private FragmentWaStatusBinding binding;
     ArrayList<DataModel> statusImageList = new ArrayList<>();
     RecyclerView.LayoutManager mLayoutManager;
-    WAppStatusAdapter mAdapter;
+    WhatsappStatusAdapter mAdapter;
     int REQUEST_ACTION_OPEN_DOCUMENT_TREE = 1001;
     loadDataAsync async;
 
@@ -184,9 +184,10 @@ public class WABusinessStatusFragment extends Fragment {
             for (int i = 0; i < allFiles.length; i++) {
                 if (!allFiles[i].getUri().toString().contains(".nomedia")) {
                     statusImageList.add(new DataModel(allFiles[i].getUri().toString(),
-                            allFiles[i].getName()));
+                            allFiles[i].getName(), false));
                 }
             }
+
             return null;
         }
 
@@ -197,10 +198,20 @@ public class WABusinessStatusFragment extends Fragment {
             new Handler().postDelayed(() -> {
                 if (getActivity() != null) {
                     Collections.reverse(statusImageList);
-                    mAdapter = new WAppStatusAdapter(getActivity(), statusImageList, false);
+                    mAdapter = new WhatsappStatusAdapter(getActivity(), statusImageList, false);
                     binding.rv.setAdapter(mAdapter);
                     binding.progressBar.setVisibility(View.GONE);
                     binding.rv.setVisibility(View.VISIBLE);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (SharedPrefs.getAutoSave(getActivity())){
+                                for (int i = 0; i<statusImageList.size(); i++){
+                                    Utils.copyFileInSavedDir(getActivity(), statusImageList.get(i).getFilepath());
+                                }
+                            }
+                        }
+                    }).start();
                 }
 
                 if (statusImageList == null || statusImageList.size() == 0) {
@@ -208,7 +219,7 @@ public class WABusinessStatusFragment extends Fragment {
                 } else {
                     binding.isEmptyList.setVisibility(View.GONE);
                 }
-            }, 300);
+            }, 100);
         }
     }
 }

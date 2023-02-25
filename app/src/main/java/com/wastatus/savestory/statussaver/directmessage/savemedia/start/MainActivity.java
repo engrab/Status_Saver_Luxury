@@ -1,7 +1,6 @@
 package com.wastatus.savestory.statussaver.directmessage.savemedia.start;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,8 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -28,39 +25,53 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activities.AsciiCategoryActivity;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.directChat.activities.ChatDirectActivity;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.emoji.activities.TextToEmojiActivity;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.activities.StylishFontsActivity;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.textRepeater.activities.TextRepeaterActivity;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.SavedStatusFragment;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.WABusinessStatusFragment;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.WAStatusFragment;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.scan.ScanWhatsappActivity;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivityMainBinding;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.fileObserve.MyFileObserver;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.setting.SettingActivity;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.SavedStatusFragment;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.WABusinessStatusFragment;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.WAStatusFragment;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activities.AsciiCategoryActivity;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivityMainBinding;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.directChat.activities.ChatDirectActivity;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.emoji.activities.TextToEmojiActivity;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.scan.ScanWhatsappActivity;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.setting.SettingActivity;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.activities.StylishFontsActivity;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.textRepeater.activities.TextRepeaterActivity;
+
+import org.apache.commons.io.comparator.LastModifiedFileComparator;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private ActivityMainBinding binding;
     public static final int READ_WRITE_PERMISSION_CODE = 21;
     ViewPagerAdapter viewPagerAdapter;
     AdView adView;
     String[] permissionsList = new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    //    private MyFileObserver fileObserver;
 
-//    private MyFileObserver fileObserver;
+    private ActivityMainBinding binding;
+
+    public static boolean checkPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 
 
@@ -80,9 +91,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            fileObserver = new MyFileObserver(filePath, getApplicationContext());
 //            fileObserver.startWatching();
 //        }
-        FirebaseApp.initializeApp(this);
-
-        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        FirebaseApp.initializeApp(this);
+//
+//        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         viewpagerAndBottomNav();
 
@@ -113,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.navView.setNavigationItemSelectedListener(this);
 
 
-
         if (AdmobAdsManager.isAdmob) {
             AdmobAdsManager.loadInterstitial(MainActivity.this);
 
@@ -121,16 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
-    public static boolean checkPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void viewpagerAndBottomNav() {
         binding.appBarMain.bottomNavigation.setOnNavigationItemSelectedListener(this);
         binding.navView.setNavigationItemSelectedListener(MainActivity.this);
-//        binding.appBarMain.viewPager.setOffscreenPageLimit(3);
+        binding.appBarMain.viewPager.setOffscreenPageLimit(3);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         binding.appBarMain.viewPager.setAdapter(viewPagerAdapter);
 
@@ -213,8 +214,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (!checkPermissions(this, permissionsList)) {
                 ActivityCompat.requestPermissions(this, permissionsList, READ_WRITE_PERMISSION_CODE);
             }
+
         }
     }
+
+
 
     @Override
     protected void onDestroy() {
@@ -266,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return "";
     }
+
     @Override
     public void onBackPressed() {
 

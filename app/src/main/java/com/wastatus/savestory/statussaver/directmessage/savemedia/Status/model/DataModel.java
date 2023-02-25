@@ -3,21 +3,10 @@ package com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 
 public class DataModel implements Parcelable {
-    private String filename;
-    private String filepath;
-
-    public DataModel(String paramString1, String paramString2) {
-        this.filepath = paramString1;
-        this.filename = paramString2;
-    }
-
-    protected DataModel(Parcel in) {
-        filename = in.readString();
-        filepath = in.readString();
-    }
-
     public static final Creator<DataModel> CREATOR = new Creator<DataModel>() {
         @Override
         public DataModel createFromParcel(Parcel in) {
@@ -29,21 +18,51 @@ public class DataModel implements Parcelable {
             return new DataModel[size];
         }
     };
+    private String filename;
+    private String filepath;
+    private Boolean isSaved;
 
-    public String getFileName() {
-        return this.filename;
+    public DataModel(String filepath, String filename, Boolean isSaved) {
+        this.filepath = filepath;
+        this.filename = filename;
+        this.isSaved = isSaved;
     }
 
-    public String getFilePath() {
-        return this.filepath;
+    public DataModel(String filepath, String filename) {
+        this.filepath = filepath;
+        this.filename = filename;
+        this.isSaved = false;
     }
 
-    public void setFileName(String paramString) {
-        this.filename = paramString;
+    protected DataModel(Parcel in) {
+        filename = in.readString();
+        filepath = in.readString();
+        byte tmpIsSaved = in.readByte();
+        isSaved = tmpIsSaved == 0 ? null : tmpIsSaved == 1;
     }
 
-    public void setFilePath(String paramString) {
-        this.filepath = paramString;
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+    public Boolean getSaved() {
+        return isSaved;
+    }
+
+    public void setSaved(Boolean saved) {
+        isSaved = saved;
     }
 
     @Override
@@ -52,8 +71,9 @@ public class DataModel implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(filename);
-        parcel.writeString(filepath);
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(filename);
+        dest.writeString(filepath);
+        dest.writeByte((byte) (isSaved == null ? 0 : isSaved ? 1 : 2));
     }
 }

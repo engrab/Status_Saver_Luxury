@@ -26,12 +26,23 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class SavedStatusFragment extends Fragment {
-private FragmentSavedStatusBinding binding;
     File file;
-    ArrayList<DataModel> downloadImageList = new ArrayList<>();
-    ArrayList<DataModel> downloadVideoList = new ArrayList<>();
+    public static ArrayList<DataModel> downloadImageList = new ArrayList<>();
     RecyclerView.LayoutManager mLayoutManager;
     DownloadAdapter mAdapter;
+    private FragmentSavedStatusBinding binding;
+
+    public static File[] dirListByAscendingDate(File folder) {
+        if (!folder.isDirectory()) {
+            return null;
+        }
+        File[] sortedByDate = folder.listFiles();
+        if (sortedByDate == null || sortedByDate.length <= 1) {
+            return sortedByDate;
+        }
+        Arrays.sort(sortedByDate, LastModifiedFileComparator.LASTMODIFIED_REVERSE);
+        return sortedByDate;
+    }
 
     public View onCreateView(@NonNull LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle) {
         binding = FragmentSavedStatusBinding.inflate(paramLayoutInflater, paramViewGroup, false);
@@ -39,24 +50,26 @@ private FragmentSavedStatusBinding binding;
         binding.rv.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getActivity(), 3);
         binding.rv.setLayoutManager(this.mLayoutManager);
+        loadMedia();
         return view;
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        loadMedia();
+
     }
 
     public void loadMedia() {
         file = Utils.downloadWhatsAppDir;
 
         downloadImageList.clear();
-        downloadVideoList.clear();
         if (!file.isDirectory()) {
             return;
         }
@@ -79,30 +92,18 @@ private FragmentSavedStatusBinding binding;
         }
         int i = 0;
         while (i < listMediaFiles.length) {
-                downloadImageList.add(new DataModel(listMediaFiles[i].getAbsolutePath(), listMediaFiles[i].getName()));
+            downloadImageList.add(new DataModel(listMediaFiles[i].getAbsolutePath(), listMediaFiles[i].getName(), true));
             i++;
         }
 
-            if (downloadImageList.size() > 0) {
-                binding.isEmptyList.setVisibility(View.GONE);
-            } else {
-                binding.isEmptyList.setVisibility(View.VISIBLE);
-            }
-            mAdapter = new DownloadAdapter(getActivity(), downloadImageList);
-            binding.rv.setAdapter(mAdapter);
-            mAdapter.notifyDataSetChanged();
-
-    }
-
-    public static File[] dirListByAscendingDate(File folder) {
-        if (!folder.isDirectory()) {
-            return null;
+        if (downloadImageList.size() > 0) {
+            binding.isEmptyList.setVisibility(View.GONE);
+        } else {
+            binding.isEmptyList.setVisibility(View.VISIBLE);
         }
-        File[] sortedByDate = folder.listFiles();
-        if (sortedByDate == null || sortedByDate.length <= 1) {
-            return sortedByDate;
-        }
-        Arrays.sort(sortedByDate, LastModifiedFileComparator.LASTMODIFIED_REVERSE);
-        return sortedByDate;
+        mAdapter = new DownloadAdapter(getActivity(), downloadImageList);
+        binding.rv.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+
     }
 }

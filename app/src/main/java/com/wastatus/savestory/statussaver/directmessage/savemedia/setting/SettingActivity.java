@@ -8,9 +8,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivitySettingBinding;
@@ -57,6 +59,14 @@ public class SettingActivity extends AppCompatActivity {
             goToPrivacy();
 
 
+        });
+        binding.swAutoSave.setChecked(SharedPrefs.getAutoSave(SettingActivity.this));
+        binding.swAutoSave.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                SharedPrefs.setAutoSave(SettingActivity.this, isChecked);
+            }
         });
 
 

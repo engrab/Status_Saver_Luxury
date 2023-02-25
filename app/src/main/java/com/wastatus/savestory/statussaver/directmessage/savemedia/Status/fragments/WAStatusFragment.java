@@ -23,27 +23,42 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.WAppStatusAdapter;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.WhatsappStatusAdapter;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.FragmentWaStatusBinding;
 
+import org.apache.commons.io.comparator.LastModifiedFileComparator;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
 
 public class WAStatusFragment extends Fragment {
-    private FragmentWaStatusBinding binding;
     ArrayList<DataModel> statusImageList = new ArrayList<>();
     RecyclerView.LayoutManager mLayoutManager;
-    WAppStatusAdapter mAdapter;
+    WhatsappStatusAdapter mAdapter;
     int REQUEST_ACTION_OPEN_DOCUMENT_TREE = 1001;
     loadDataAsync async;
+    File file;
+    ArrayList<DataModel> saveDataList = new ArrayList<>();
+    private FragmentWaStatusBinding binding;
 
+    public static File[] dirListByAscendingDate(File folder) {
+        if (!folder.isDirectory()) {
+            return null;
+        }
+        File[] sortedByDate = folder.listFiles();
+        if (sortedByDate == null || sortedByDate.length <= 1) {
+            return sortedByDate;
+        }
+        Arrays.sort(sortedByDate, LastModifiedFileComparator.LASTMODIFIED_REVERSE);
+        return sortedByDate;
+    }
 
     @Nullable
     @Override
@@ -101,6 +116,23 @@ public class WAStatusFragment extends Fragment {
         return view;
     }
 
+    public void loadMedia() {
+        file = Utils.downloadWhatsAppDir;
+        File[] listMediaFiles = dirListByAscendingDate(file);
+
+        if (listMediaFiles != null){
+            for (File listMediaFile : listMediaFiles) {
+                saveDataList.add(new DataModel(listMediaFile.getAbsolutePath(), listMediaFile.getName(), true));
+            }
+        }else {
+            Toast.makeText(getContext(), "List is Empty", Toast.LENGTH_SHORT).show();
+
+        }
+
+
+
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -129,6 +161,7 @@ public class WAStatusFragment extends Fragment {
     }
 
     public void populateGrid() {
+
         async = new loadDataAsync();
         async.execute();
     }
@@ -153,6 +186,14 @@ public class WAStatusFragment extends Fragment {
         }
     }
 
+    public String getWAFolder() {
+        if (new File(Environment.getExternalStorageDirectory() + File.separator + "Android/media/com.whatsapp/WhatsApp" + File.separator + "Media" + File.separator + ".Statuses").isDirectory()) {
+            return "Android%2Fmedia%2Fcom.whatsapp%2FWhatsApp%2FMedia%2F.Statuses";
+        } else {
+            return "WhatsApp%2FMedia%2F.Statuses";
+        }
+    }
+
     class loadDataAsync extends AsyncTask<Void, Void, Void> {
         DocumentFile[] allFiles;
 
@@ -173,10 +214,17 @@ public class WAStatusFragment extends Fragment {
 //            Arrays.sort(allFiles, (o1, o2) -> Long.compare(o2.lastModified(), o1.lastModified()));
             for (int i = 0; i < allFiles.length; i++) {
                 if (!allFiles[i].getUri().toString().contains(".nomedia")) {
+
                     statusImageList.add(new DataModel(allFiles[i].getUri().toString(),
-                            allFiles[i].getName()));
+                            allFiles[i].getName(), true));
+
+
                 }
             }
+
+
+
+
             return null;
         }
 
@@ -186,11 +234,29 @@ public class WAStatusFragment extends Fragment {
 
             new Handler().postDelayed(() -> {
                 if (getActivity() != null) {
+
+//                    if (SharedPrefs.getAutoSave(getActivity())) {
+//                        for (int i = 0; i < statusImageList.size(); i++) {
+//                            Utils.copyFileInSavedDir(getActivity(), statusImageList.get(i).getFilepath());
+//                        }
+//                    }
+
+                    loadMedia();
+                    for (int i = 0; i < statusImageList.size(); i++) {
+                        for (int j = 0; j < saveDataList.size(); j++) {
+                            if (Objects.equals(statusImageList.get(i).getFilename(), saveDataList.get(j).getFilename())) {
+                                statusImageList.get(i).setSaved(true);
+                                return;
+                            }
+                        }
+                    }
                     Collections.reverse(statusImageList);
-                    mAdapter = new WAppStatusAdapter(getActivity(), statusImageList, false);
+                    mAdapter = new WhatsappStatusAdapter(getActivity(), statusImageList, true);
                     binding.rv.setAdapter(mAdapter);
                     binding.progressBar.setVisibility(View.GONE);
                     binding.rv.setVisibility(View.VISIBLE);
+
+
                 }
 
                 if (statusImageList == null || statusImageList.size() == 0) {
@@ -198,17 +264,8 @@ public class WAStatusFragment extends Fragment {
                 } else {
                     binding.isEmptyList.setVisibility(View.GONE);
                 }
-            }, 300);
+            }, 100);
         }
-    }
-
-    public String getWAFolder() {
-            if (new File(Environment.getExternalStorageDirectory() + File.separator + "Android/media/com.whatsapp/WhatsApp" + File.separator + "Media" + File.separator + ".Statuses").isDirectory()) {
-                return "Android%2Fmedia%2Fcom.whatsapp%2FWhatsApp%2FMedia%2F.Statuses";
-            }
-         else {
-                return "WhatsApp%2FMedia%2F.Statuses";
-            }
     }
 
 }

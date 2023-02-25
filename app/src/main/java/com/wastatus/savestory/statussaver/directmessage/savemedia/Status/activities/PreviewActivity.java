@@ -58,7 +58,7 @@ public class PreviewActivity extends AppCompatActivity {
 
 
                         try {
-                            Utils.download(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getFilePath());
+                            Utils.download(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getFilepath());
                             Toast.makeText(PreviewActivity.this, "Status saved successfully", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             Toast.makeText(PreviewActivity.this, "Sorry we can't move file.try with other file.", Toast.LENGTH_LONG).show();
@@ -72,7 +72,7 @@ public class PreviewActivity extends AppCompatActivity {
 
 
                     if (imageList.size() > 0) {
-                        Utils.repostOnWhatsapp(PreviewActivity.this, Utils.isVideoFile(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getFilePath()), imageList.get(binding.viewPager.getCurrentItem()).getFilePath(), pakage);
+                        Utils.repostOnWhatsapp(PreviewActivity.this, Utils.isVideoFile(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getFilepath()), imageList.get(binding.viewPager.getCurrentItem()).getFilepath(), pakage);
                     } else {
                         finish();
                     }
@@ -81,7 +81,7 @@ public class PreviewActivity extends AppCompatActivity {
 
                 case R.id.llShare:
                     if (imageList.size() > 0) {
-                        Utils.shareFile(PreviewActivity.this, Utils.isVideoFile(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getFilePath()), imageList.get(binding.viewPager.getCurrentItem()).getFilePath());
+                        Utils.shareFile(PreviewActivity.this, Utils.isVideoFile(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getFilepath()), imageList.get(binding.viewPager.getCurrentItem()).getFilepath());
                     } else {
                         finish();
                     }
@@ -99,13 +99,13 @@ public class PreviewActivity extends AppCompatActivity {
                                 int currentItem = 0;
 
                                 if (path.equals("download")) {
-                                    File file = new File(imageList.get(binding.viewPager.getCurrentItem()).getFilePath());
+                                    File file = new File(imageList.get(binding.viewPager.getCurrentItem()).getFilepath());
                                     if (file.exists()) {
                                         boolean del = file.delete();
                                         delete(currentItem);
                                     }
                                 } else {
-                                    DocumentFile fromTreeUri = DocumentFile.fromSingleUri(PreviewActivity.this, Uri.parse(imageList.get(binding.viewPager.getCurrentItem()).getFilePath()));
+                                    DocumentFile fromTreeUri = DocumentFile.fromSingleUri(PreviewActivity.this, Uri.parse(imageList.get(binding.viewPager.getCurrentItem()).getFilepath()));
                                     if (fromTreeUri.exists()) {
                                         boolean del = fromTreeUri.delete();
                                         delete(currentItem);
@@ -205,10 +205,6 @@ public class PreviewActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
 
-                if (AdmobAdsManager.isAdmob) {
-
-                    AdmobAdsManager.showInterAd(PreviewActivity.this, null);
-                }
 
             }
 
