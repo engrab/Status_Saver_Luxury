@@ -20,11 +20,11 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.U
 
 import java.util.ArrayList;
 
-public class FullscreenImageAdapter extends PagerAdapter {
+public class PreviewPagerAdapter extends PagerAdapter {
     Activity activity;
     ArrayList<DataModel> imageList;
 
-    public FullscreenImageAdapter(Activity activity, ArrayList<DataModel> imageList) {
+    public PreviewPagerAdapter(Activity activity, ArrayList<DataModel> imageList) {
         this.activity = activity;
         this.imageList = imageList;
     }

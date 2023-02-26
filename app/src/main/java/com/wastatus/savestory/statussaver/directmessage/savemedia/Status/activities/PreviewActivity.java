@@ -17,7 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.FullscreenImageAdapter;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.PreviewPagerAdapter;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.LayManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
@@ -36,7 +36,7 @@ public class PreviewActivity extends AppCompatActivity {
     String pakage;
 
 
-    FullscreenImageAdapter fullscreenImageAdapter;
+    PreviewPagerAdapter previewPagerAdapter;
     String path;
 
 
@@ -58,7 +58,7 @@ public class PreviewActivity extends AppCompatActivity {
 
 
                         try {
-                            Utils.download(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getFilepath());
+                            Utils.download(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getFilepath(), imageList.get(binding.viewPager.getCurrentItem()).getFilename());
                             Toast.makeText(PreviewActivity.this, "Status saved successfully", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             Toast.makeText(PreviewActivity.this, "Sorry we can't move file.try with other file.", Toast.LENGTH_LONG).show();
@@ -141,8 +141,8 @@ public class PreviewActivity extends AppCompatActivity {
             currentItem = binding.viewPager.getCurrentItem();
         }
         imageList.remove(binding.viewPager.getCurrentItem());
-        fullscreenImageAdapter = new FullscreenImageAdapter(PreviewActivity.this, imageList);
-        binding.viewPager.setAdapter(fullscreenImageAdapter);
+        previewPagerAdapter = new PreviewPagerAdapter(PreviewActivity.this, imageList);
+        binding.viewPager.setAdapter(previewPagerAdapter);
 
         Intent intent = new Intent();
         setResult(10, intent);
@@ -193,8 +193,8 @@ public class PreviewActivity extends AppCompatActivity {
             binding.llSave.setVisibility(View.VISIBLE);
         }
 
-        fullscreenImageAdapter = new FullscreenImageAdapter(PreviewActivity.this, imageList);
-        binding.viewPager.setAdapter(fullscreenImageAdapter);
+        previewPagerAdapter = new PreviewPagerAdapter(PreviewActivity.this, imageList);
+        binding.viewPager.setAdapter(previewPagerAdapter);
         binding.viewPager.setCurrentItem(position);
         binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

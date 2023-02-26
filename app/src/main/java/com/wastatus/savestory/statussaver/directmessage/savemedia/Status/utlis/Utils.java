@@ -24,14 +24,16 @@ import android.widget.Toast;
 import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
 
-
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,8 +41,10 @@ import java.util.regex.Pattern;
 public class Utils {
 
     public static File downloadWhatsAppDir = new File(Environment.getExternalStorageDirectory() + "/Download/WAStatus");
-
-
+    public static ArrayList<DataModel> waList = new ArrayList<>();
+    public static ArrayList<DataModel> wabList = new ArrayList<>();
+    public static ArrayList<DataModel> downloadedList = new ArrayList<>();
+    public static AlertDialog alertDialog = null;
 
     private static boolean doesPackageExist(String targetPackage, Context context) {
         try {
@@ -51,7 +55,6 @@ public class Utils {
         }
     }
 
-
     public static String getBack(String paramString1, String paramString2) {
         Matcher localMatcher = Pattern.compile(paramString2).matcher(paramString1);
         if (localMatcher.find()) {
@@ -59,7 +62,6 @@ public class Utils {
         }
         return "";
     }
-
 
     public static void mShare(String filepath, Activity activity) {
         File fileToShare = new File(filepath);
@@ -107,6 +109,7 @@ public class Utils {
         share.putExtra(Intent.EXTRA_STREAM, uri);
         context.startActivity(share);
     }
+
     public static void repostOnWhatsapp(Context context, boolean isVideo, String path, String pakage) {
         Intent share = new Intent();
         share.setAction(Intent.ACTION_SEND);
@@ -155,9 +158,6 @@ public class Utils {
             e.printStackTrace();
         }
     }
-
-
-    public static AlertDialog alertDialog = null;
 
     public static void displayLoader(Context context) {
         if (alertDialog == null) {
@@ -234,17 +234,16 @@ public class Utils {
         }
     }
 
-    public static boolean copyFileInSavedDir(Context context, String sourceFile) {
+    public static boolean copyFileInSavedDir(Context context, String sourceFile, String fileName) {
 
         String finalPath = getDir().getAbsolutePath();
-
-        String filename=sourceFile.substring(sourceFile.lastIndexOf("%2F")+1);
-        String pathWithName = finalPath + File.separator + filename;
+//        String lastFourChars = StringUtils.left(input, 4);
+        String pathWithName = finalPath + File.separator + fileName;
         Uri destUri = Uri.fromFile(new File(pathWithName));
         InputStream is;
         OutputStream os;
         try {
-            Uri uri= Uri.parse(sourceFile);
+            Uri uri = Uri.parse(sourceFile);
             is = context.getContentResolver().openInputStream(uri);
             os = context.getContentResolver().openOutputStream(destUri, "w");
 
@@ -280,7 +279,7 @@ public class Utils {
 
     }
 
-    public static boolean download(Context context, String sourceFile) {
-        return copyFileInSavedDir(context, sourceFile);
+    public static boolean download(Context context, String sourceFile, String fileName) {
+        return copyFileInSavedDir(context, sourceFile, fileName);
     }
 }

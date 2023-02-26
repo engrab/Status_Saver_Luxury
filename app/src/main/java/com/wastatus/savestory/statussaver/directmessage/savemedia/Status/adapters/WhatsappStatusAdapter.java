@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.listener.SaveListener;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activities.PreviewActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
@@ -30,6 +31,7 @@ public class WhatsappStatusAdapter extends RecyclerView.Adapter<WhatsappStatusAd
     ArrayList<DataModel> dataList;
     String path;
     boolean isWApp;
+
 
     public WhatsappStatusAdapter(Context context, ArrayList<DataModel> dataList, boolean isWApp) {
         this.dataList = dataList;
@@ -46,7 +48,7 @@ public class WhatsappStatusAdapter extends RecyclerView.Adapter<WhatsappStatusAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final DataModel dataModel = this.dataList.get(position);
+        final DataModel dataModel = dataList.get(position);
 
 
         if (!Utils.getBack(dataModel.getFilepath(), "((\\.mp4|\\.webm|\\.ogg|\\.mpK|\\.avi|\\.mkv|\\.flv|\\.mpg|\\.wmv|\\.vob|\\.ogv|\\.mov|\\.qt|\\.rm|\\.rmvb\\.|\\.asf|\\.m4p|\\.m4v|\\.mp2|\\.mpeg|\\.mpe|\\.mpv|\\.m2v|\\.3gp|\\.f4p|\\.f4a|\\.f4b|\\.f4v)$)").isEmpty()) {
@@ -66,7 +68,9 @@ public class WhatsappStatusAdapter extends RecyclerView.Adapter<WhatsappStatusAd
 
 
         holder.downloadIV.setOnClickListener(v -> {
-            Utils.copyFileInSavedDir(context, dataModel.getFilepath());
+            Utils.copyFileInSavedDir(context, dataModel.getFilepath(), dataModel.getFilename());
+
+
             Toast.makeText(context, "Saved successfully!", Toast.LENGTH_LONG).show();
             if (AdmobAdsManager.isAdmob) {
 
@@ -112,6 +116,8 @@ public class WhatsappStatusAdapter extends RecyclerView.Adapter<WhatsappStatusAd
             context.startActivity(intent);
         }
     }
+
+
 
 
 }

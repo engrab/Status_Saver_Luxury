@@ -37,11 +37,11 @@ import java.util.Objects;
 
 public class WABusinessStatusFragment extends Fragment {
     private FragmentWaStatusBinding binding;
-    ArrayList<DataModel> statusImageList = new ArrayList<>();
     RecyclerView.LayoutManager mLayoutManager;
     WhatsappStatusAdapter mAdapter;
     int REQUEST_ACTION_OPEN_DOCUMENT_TREE = 1001;
     loadDataAsync async;
+    private static final String TAG = "WABusiness";
 
 
     @Nullable
@@ -178,12 +178,12 @@ public class WABusinessStatusFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
             allFiles = null;
-            statusImageList = new ArrayList<>();
             allFiles = getFromSdcard();
+            Utils.wabList.clear();
 //            Arrays.sort(allFiles, (o1, o2) -> Long.compare(o2.lastModified(), o1.lastModified()));
             for (int i = 0; i < allFiles.length; i++) {
                 if (!allFiles[i].getUri().toString().contains(".nomedia")) {
-                    statusImageList.add(new DataModel(allFiles[i].getUri().toString(),
+                    Utils.wabList.add(new DataModel(allFiles[i].getUri().toString(),
                             allFiles[i].getName(), false));
                 }
             }
@@ -197,29 +197,55 @@ public class WABusinessStatusFragment extends Fragment {
 
             new Handler().postDelayed(() -> {
                 if (getActivity() != null) {
-                    Collections.reverse(statusImageList);
-                    mAdapter = new WhatsappStatusAdapter(getActivity(), statusImageList, false);
+
+                    if (SharedPrefs.getAutoSave(getActivity())) {
+                        saveAllData();
+                    }
+
+
+                    compareImage();
+                    Collections.reverse(Utils.wabList);
+                    mAdapter = new WhatsappStatusAdapter(getActivity(), Utils.wabList, false);
                     binding.rv.setAdapter(mAdapter);
                     binding.progressBar.setVisibility(View.GONE);
                     binding.rv.setVisibility(View.VISIBLE);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (SharedPrefs.getAutoSave(getActivity())){
-                                for (int i = 0; i<statusImageList.size(); i++){
-                                    Utils.copyFileInSavedDir(getActivity(), statusImageList.get(i).getFilepath());
-                                }
+                    new Thread(() -> {
+
+                        if (SharedPrefs.getAutoSave(getActivity())){
+                            for (int i = 0; i<Utils.wabList.size(); i++){
+                                Utils.copyFileInSavedDir(getActivity(), Utils.wabList.get(i).getFilepath(), Utils.wabList.get(i).getFilename());
                             }
                         }
                     }).start();
                 }
 
-                if (statusImageList == null || statusImageList.size() == 0) {
+                if (Utils.wabList == null || Utils.wabList.size() == 0) {
                     binding.isEmptyList.setVisibility(View.VISIBLE);
                 } else {
                     binding.isEmptyList.setVisibility(View.GONE);
                 }
             }, 100);
         }
+    }
+    private void compareImage() {
+
+        for (int i = 0; i < Utils.waList.size(); i++) {
+
+            for (int j = 0; j < Utils.downloadedList.size(); j++) {
+
+
+                if (Utils.waList.get(i).getFilename().equals(Utils.downloadedList.get(j).getFilename())) {
+                    Utils.waList.get(i).setSaved(true);
+
+                }
+            }
+        }
+    }
+
+    private void saveAllData() {
+        for (int i = 0; i < Utils.waList.size(); i++) {
+            Utils.copyFileInSavedDir(requireContext(), Utils.waList.get(i).getFilepath(), Utils.waList.get(i).getFilename());
+        }
+
     }
 }
