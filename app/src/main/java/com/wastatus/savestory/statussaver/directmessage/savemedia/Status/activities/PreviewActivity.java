@@ -172,10 +172,10 @@ public class PreviewActivity extends AppCompatActivity {
 
 
 
-        LinearLayout.LayoutParams btnParam = LayManager.setLinParams(PreviewActivity.this, 300, 100);
-        binding.llSave.setLayoutParams(btnParam);
-        binding.llShare.setLayoutParams(btnParam);
-        binding.llDelete.setLayoutParams(btnParam);
+//        LinearLayout.LayoutParams btnParam = LayManager.setLinParams(PreviewActivity.this, 300, 100);
+//        binding.llSave.setLayoutParams(btnParam);
+//        binding.llShare.setLayoutParams(btnParam);
+//        binding.llDelete.setLayoutParams(btnParam);
 
         imageList = getIntent().getParcelableArrayListExtra("images");
         position = getIntent().getIntExtra("position", 0);

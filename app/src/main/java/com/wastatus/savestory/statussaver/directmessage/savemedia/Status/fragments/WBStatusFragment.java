@@ -23,22 +23,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.WhatsappStatusAdapter;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.WBStatusAdapter;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.FragmentWaStatusBinding;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
 
-public class WABusinessStatusFragment extends Fragment {
+public class WBStatusFragment extends Fragment {
     private FragmentWaStatusBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
-    WhatsappStatusAdapter mAdapter;
+    WBStatusAdapter mAdapter;
     int REQUEST_ACTION_OPEN_DOCUMENT_TREE = 1001;
     loadDataAsync async;
     private static final String TAG = "WABusiness";
@@ -94,10 +93,18 @@ public class WABusinessStatusFragment extends Fragment {
 
         });
 
-        if (!SharedPrefs.getWBTree(getActivity()).equals("")) {
-            populateGrid();
-        }
+
         return view;
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (!SharedPrefs.getWBTree(getActivity()).equals("")) {
+                populateGrid();
+            }
+        }
+
     }
 
     @Override
@@ -199,24 +206,17 @@ public class WABusinessStatusFragment extends Fragment {
                 if (getActivity() != null) {
 
                     if (SharedPrefs.getAutoSave(getActivity())) {
-                        saveAllData();
+                        Utils.saveWBData(requireContext());
                     }
 
 
                     compareImage();
                     Collections.reverse(Utils.wabList);
-                    mAdapter = new WhatsappStatusAdapter(getActivity(), Utils.wabList, false);
+                    mAdapter = new WBStatusAdapter(getActivity(), Utils.wabList);
                     binding.rv.setAdapter(mAdapter);
                     binding.progressBar.setVisibility(View.GONE);
                     binding.rv.setVisibility(View.VISIBLE);
-                    new Thread(() -> {
 
-                        if (SharedPrefs.getAutoSave(getActivity())){
-                            for (int i = 0; i<Utils.wabList.size(); i++){
-                                Utils.copyFileInSavedDir(getActivity(), Utils.wabList.get(i).getFilepath(), Utils.wabList.get(i).getFilename());
-                            }
-                        }
-                    }).start();
                 }
 
                 if (Utils.wabList == null || Utils.wabList.size() == 0) {
@@ -229,23 +229,16 @@ public class WABusinessStatusFragment extends Fragment {
     }
     private void compareImage() {
 
-        for (int i = 0; i < Utils.waList.size(); i++) {
+        for (int i = 0; i < Utils.wabList.size(); i++) {
 
             for (int j = 0; j < Utils.downloadedList.size(); j++) {
 
 
-                if (Utils.waList.get(i).getFilename().equals(Utils.downloadedList.get(j).getFilename())) {
-                    Utils.waList.get(i).setSaved(true);
+                if (Utils.wabList.get(i).getFilename().equals(Utils.downloadedList.get(j).getFilename())) {
+                    Utils.wabList.get(i).setSaved(true);
 
                 }
             }
         }
-    }
-
-    private void saveAllData() {
-        for (int i = 0; i < Utils.waList.size(); i++) {
-            Utils.copyFileInSavedDir(requireContext(), Utils.waList.get(i).getFilepath(), Utils.waList.get(i).getFilename());
-        }
-
     }
 }

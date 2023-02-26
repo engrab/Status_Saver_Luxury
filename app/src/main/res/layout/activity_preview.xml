@@ -34,19 +34,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/appBar"
-        android:layout_gravity="center"
-        android:gravity="center"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
         android:layout_margin="5dp"
+        android:gravity="center"
         android:orientation="vertical" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/llAds"
-        android:background="@drawable/main_bg_home"
-        >
+        android:background="@drawable/main_bg_home">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
@@ -61,103 +60,65 @@
             android:id="@+id/bottomLay"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:gravity="center"
             android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content" />
 
-            <LinearLayout
+            <ImageView
                 android:id="@+id/llShare"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/recent_circle_bg"
+                android:padding="@dimen/_5sdp"
+                android:scaleType="fitEnd"
+                android:src="@drawable/ic_share_black_24dp" />
 
-                <ImageView
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
-                    android:src="@drawable/p_share" />
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_7sdp"
-                    android:text="Share"
-                    android:textColor="@color/download_btn_text_color"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
+            <ImageView
                 android:id="@+id/llRepost"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/recent_circle_bg"
+                android:padding="@dimen/_5sdp"
+                android:scaleType="fitEnd"
+                android:src="@drawable/ic_baseline_post_add_24" />
 
-                <ImageView
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
-                    android:src="@drawable/ic_baseline_post_add_24" />
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_7sdp"
-                    android:text="Repost"
-                    android:textColor="@color/download_btn_text_color"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-
-            <LinearLayout
+            <ImageView
                 android:id="@+id/llSave"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/recent_circle_bg"
+                android:padding="@dimen/_5sdp"
+                android:scaleType="fitEnd"
+                android:src="@drawable/ic_baseline_download_24" />
 
-                <ImageView
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
-                    android:src="@drawable/p_save" />
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/txt3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_7sdp"
-                    android:text="Save"
-                    android:textColor="@color/download_btn_text_color"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
+            <ImageView
                 android:id="@+id/llDelete"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:visibility="gone"
-                android:gravity="center">
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/recent_circle_bg"
+                android:padding="@dimen/_5sdp"
+                android:scaleType="fitEnd"
+                android:src="@drawable/ic_baseline_delete_24"
+                android:visibility="gone" />
 
-                <ImageView
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
-                    android:src="@drawable/ic_baseline_delete_24" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_7sdp"
-                    android:text="Delete"
-                    android:textColor="@color/download_btn_text_color"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
-            </LinearLayout>
 
         </LinearLayout>
 

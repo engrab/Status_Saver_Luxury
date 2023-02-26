@@ -17,26 +17,24 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.listener.SaveListener;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activities.PreviewActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 
 import java.util.ArrayList;
 
 
-public class WhatsappStatusAdapter extends RecyclerView.Adapter<WhatsappStatusAdapter.ViewHolder> {
+public class WBStatusAdapter extends RecyclerView.Adapter<WBStatusAdapter.ViewHolder> {
     private final Context context;
     ArrayList<DataModel> dataList;
     String path;
-    boolean isWApp;
 
 
-    public WhatsappStatusAdapter(Context context, ArrayList<DataModel> dataList, boolean isWApp) {
+    public WBStatusAdapter(Context context, ArrayList<DataModel> dataList) {
         this.dataList = dataList;
         this.context = context;
-        this.isWApp = isWApp;
         path = Utils.downloadWhatsAppDir.getAbsolutePath();
     }
 
@@ -68,16 +66,32 @@ public class WhatsappStatusAdapter extends RecyclerView.Adapter<WhatsappStatusAd
 
 
         holder.downloadIV.setOnClickListener(v -> {
-            Utils.copyFileInSavedDir(context, dataModel.getFilepath(), dataModel.getFilename());
+            if (dataList.get(position).getSaved()){
+
+                Toast.makeText(context, "Media Already Downloaded", Toast.LENGTH_LONG).show();
+            } else {
+                if (SharedPrefs.getAutoSave(context)) {
+                    Utils.saveWBData(context);
+                    for (int i = 0; i < dataList.size(); i++){
+                        dataList.get(i).setSaved(true);
+                    }
+                }else {
+                    Utils.copyFileInSavedDir(context, dataModel.getFilepath(), dataModel.getFilename());
+                    Toast.makeText(context, "Media Download successfully!", Toast.LENGTH_LONG).show();
+                    holder.downloadIV.setImageResource(R.drawable.ic_baseline_check_24);
+                    dataList.get(position).setSaved(true);
 
 
-            Toast.makeText(context, "Saved successfully!", Toast.LENGTH_LONG).show();
-            if (AdmobAdsManager.isAdmob) {
 
-                AdmobAdsManager.showInterAd((Activity) context, null);
+                }
+
+                notifyDataSetChanged();
+
+                if (AdmobAdsManager.isAdmob) {
+
+                    AdmobAdsManager.showInterAd((Activity) context, null);
+                }
             }
-            holder.downloadIV.setImageResource(R.drawable.ic_baseline_check_24);
-
         });
 
     }
@@ -108,11 +122,7 @@ public class WhatsappStatusAdapter extends RecyclerView.Adapter<WhatsappStatusAd
             intent.putExtra("position", getAdapterPosition());
             intent.putExtra("statusdownload", "status");
             intent.putExtra("folderpath", path);
-            if (isWApp){
-                intent.putExtra("pakage", "com.whatsapp");
-            }else {
-                intent.putExtra("pakage", "com.whatsapp.w4b");
-            }
+            intent.putExtra("pakage", "com.whatsapp.w4b");
             context.startActivity(intent);
         }
     }

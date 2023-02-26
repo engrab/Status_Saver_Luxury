@@ -23,16 +23,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.WhatsappStatusAdapter;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.WAStatusAdapter;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.FragmentWaStatusBinding;
 
-import org.apache.commons.io.comparator.LastModifiedFileComparator;
-
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -40,24 +37,14 @@ import java.util.Objects;
 public class WAStatusFragment extends Fragment {
     private static final String TAG = "WAStatusFragment";
     RecyclerView.LayoutManager mLayoutManager;
-    WhatsappStatusAdapter mAdapter;
+    WAStatusAdapter mAdapter;
     int REQUEST_ACTION_OPEN_DOCUMENT_TREE = 1001;
     loadDataAsync async;
     File file;
     private FragmentWaStatusBinding binding;
 
 
-    public static File[] dirListByAscendingDate(File folder) {
-        if (!folder.isDirectory()) {
-            return null;
-        }
-        File[] sortedByDate = folder.listFiles();
-        if (sortedByDate == null || sortedByDate.length <= 1) {
-            return sortedByDate;
-        }
-        Arrays.sort(sortedByDate, LastModifiedFileComparator.LASTMODIFIED_REVERSE);
-        return sortedByDate;
-    }
+
 
     @Nullable
     @Override
@@ -177,27 +164,8 @@ public class WAStatusFragment extends Fragment {
         }
     }
 
-    private void compareImage() {
-
-        for (int i = 0; i < Utils.waList.size(); i++) {
-
-            for (int j = 0; j < Utils.downloadedList.size(); j++) {
 
 
-                if (Utils.waList.get(i).getFilename().equals(Utils.downloadedList.get(j).getFilename())) {
-                    Utils.waList.get(i).setSaved(true);
-
-                }
-            }
-        }
-    }
-
-    private void saveAllData() {
-        for (int i = 0; i < Utils.waList.size(); i++) {
-            Utils.copyFileInSavedDir(requireContext(), Utils.waList.get(i).getFilepath(), Utils.waList.get(i).getFilename());
-        }
-
-    }
 
     class loadDataAsync extends AsyncTask<Void, Void, Void> {
         DocumentFile[] allFiles;
@@ -239,13 +207,12 @@ public class WAStatusFragment extends Fragment {
                 if (getActivity() != null) {
 
                     if (SharedPrefs.getAutoSave(getActivity())) {
-                        saveAllData();
+                        Utils.saveWAData(requireContext());
                     }
-
 
                     compareImage();
                     Collections.reverse(Utils.waList);
-                    mAdapter = new WhatsappStatusAdapter(getActivity(), Utils.waList, true);
+                    mAdapter = new WAStatusAdapter(getActivity(), Utils.waList);
                     binding.rv.setAdapter(mAdapter);
                     binding.progressBar.setVisibility(View.GONE);
                     binding.rv.setVisibility(View.VISIBLE);
@@ -261,5 +228,21 @@ public class WAStatusFragment extends Fragment {
             }, 100);
         }
     }
+    private void compareImage() {
+
+        for (int i = 0; i < Utils.waList.size(); i++) {
+
+            for (int j = 0; j < Utils.downloadedList.size(); j++) {
+
+
+                if (Utils.waList.get(i).getFilename().equals(Utils.downloadedList.get(j).getFilename())) {
+                    Utils.waList.get(i).setSaved(true);
+
+                }
+            }
+        }
+    }
+
+
 
 }

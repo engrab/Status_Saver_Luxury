@@ -27,13 +27,15 @@ import androidx.documentfile.provider.DocumentFile;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
 
+import org.apache.commons.io.comparator.LastModifiedFileComparator;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +47,50 @@ public class Utils {
     public static ArrayList<DataModel> wabList = new ArrayList<>();
     public static ArrayList<DataModel> downloadedList = new ArrayList<>();
     public static AlertDialog alertDialog = null;
+
+
+    public static void loadMedia() {
+        File file = downloadWhatsAppDir;
+
+
+        if (!file.isDirectory()) {
+            return;
+        }
+
+        File[] listMediaFiles = dirListByAscendingDate(file);
+
+        if (listMediaFiles != null) {
+            downloadedList.clear();
+            for (File listMediaFile : listMediaFiles) {
+                downloadedList.add(new DataModel(listMediaFile.getAbsolutePath(), listMediaFile.getName(), true));
+            }
+        }
+    }
+
+    public static File[] dirListByAscendingDate(File folder) {
+        if (!folder.isDirectory()) {
+            return null;
+        }
+        File[] sortedByDate = folder.listFiles();
+        if (sortedByDate == null || sortedByDate.length <= 1) {
+            return sortedByDate;
+        }
+        Arrays.sort(sortedByDate, LastModifiedFileComparator.LASTMODIFIED_REVERSE);
+        return sortedByDate;
+    }
+
+    public static void saveWAData(Context context) {
+        for (int i = 0; i < Utils.waList.size(); i++) {
+            Utils.copyFileInSavedDir(context, Utils.waList.get(i).getFilepath(), Utils.waList.get(i).getFilename());
+        }
+    }
+
+    public static void saveWBData(Context context) {
+        for (int i = 0; i < Utils.wabList.size(); i++) {
+            Utils.copyFileInSavedDir(context, Utils.wabList.get(i).getFilepath(), Utils.wabList.get(i).getFilename());
+        }
+
+    }
 
     private static boolean doesPackageExist(String targetPackage, Context context) {
         try {

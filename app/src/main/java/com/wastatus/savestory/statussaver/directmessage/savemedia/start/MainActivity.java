@@ -7,13 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,25 +18,20 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.FirebaseApp;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.DownloadAdapter;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.SavedStatusFragment;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.WABusinessStatusFragment;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.WBStatusFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.WAStatusFragment;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activities.AsciiCategoryActivity;
@@ -51,12 +43,7 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.setting.Settin
 import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.activities.StylishFontsActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.textRepeater.activities.TextRepeaterActivity;
 
-import org.apache.commons.io.comparator.LastModifiedFileComparator;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -109,11 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             binding.navView.setCheckedItem(R.id.actionWhatsapp);
 
         }
-        if (!checkPermissions(this, permissionsList)) {
-            ActivityCompat.requestPermissions(this, permissionsList, READ_WRITE_PERMISSION_CODE);
-        }else {
-            loadMedia();
-        }
+
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -137,6 +120,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             AdmobAdsManager.loadInterstitial(MainActivity.this);
 
             adView = AdmobAdsManager.banner(this, binding.appBarMain.llAds);
+        }
+
+        if (!checkPermissions(this, permissionsList)) {
+            ActivityCompat.requestPermissions(this, permissionsList, READ_WRITE_PERMISSION_CODE);
+        }else {
+            Utils.loadMedia();
         }
 
     }
@@ -223,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (!checkPermissions(this, permissionsList)) {
                 ActivityCompat.requestPermissions(this, permissionsList, READ_WRITE_PERMISSION_CODE);
             }else if (grantResults[0] == RESULT_OK){
-                loadMedia();
+                Utils.loadMedia();
             }
 
         }
@@ -425,46 +414,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
 
     }
-    public void loadMedia() {
-        file = Utils.downloadWhatsAppDir;
 
-
-        if (!file.isDirectory()) {
-            return;
-        }
-
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == 0) {
-                displayFiles(file);
-            }
-        } else {
-            displayFiles(file);
-        }
-    }
-
-    void displayFiles(File file) {
-        File[] listMediaFiles = dirListByAscendingDate(file);
-
-        if (listMediaFiles != null){
-            Utils.downloadedList.clear();
-            for (File listMediaFile : listMediaFiles) {
-                Utils.downloadedList.add(new DataModel(listMediaFile.getAbsolutePath(), listMediaFile.getName(), true));
-            }
-        }
-
-    }
-
-    public static File[] dirListByAscendingDate(File folder) {
-        if (!folder.isDirectory()) {
-            return null;
-        }
-        File[] sortedByDate = folder.listFiles();
-        if (sortedByDate == null || sortedByDate.length <= 1) {
-            return sortedByDate;
-        }
-        Arrays.sort(sortedByDate, LastModifiedFileComparator.LASTMODIFIED_REVERSE);
-        return sortedByDate;
-    }
 
     public static class ViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -479,7 +429,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (position == 0) {
                 fragment = new WAStatusFragment();
             } else if (position == 1) {
-                fragment = new WABusinessStatusFragment();
+                fragment = new WBStatusFragment();
             } else if (position == 2) {
                 fragment = new SavedStatusFragment();
             }

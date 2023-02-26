@@ -29,8 +29,8 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ViewHo
     private final Activity activity;
     private File file;
 
-    public DownloadAdapter(Activity paramActivity, ArrayList<DataModel> paramArrayList) {
-        this.mData = paramArrayList;
+    public DownloadAdapter(Activity paramActivity, ArrayList<DataModel> mData) {
+        this.mData = mData;
         this.activity = paramActivity;
     }
 
