@@ -28,8 +28,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.SavedStatusFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.WBStatusFragment;
@@ -87,9 +85,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            fileObserver = new MyFileObserver(filePath, getApplicationContext());
 //            fileObserver.startWatching();
 //        }
-        FirebaseApp.initializeApp(this);
-
-        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        FirebaseApp.initializeApp(this);
+//
+//        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         viewpagerAndBottomNav();
 
