@@ -27,7 +27,7 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapter
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.FragmentWaStatusBinding;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.FragmentWabusinessBinding;
 
 import java.io.File;
 import java.util.Collections;
@@ -35,7 +35,7 @@ import java.util.Objects;
 
 
 public class WBStatusFragment extends Fragment {
-    private FragmentWaStatusBinding binding;
+    private FragmentWabusinessBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
     WBStatusAdapter mAdapter;
     int REQUEST_ACTION_OPEN_DOCUMENT_TREE = 1001;
@@ -46,7 +46,7 @@ public class WBStatusFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentWaStatusBinding.inflate(inflater, container, false);
+        binding = FragmentWabusinessBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
 
@@ -56,8 +56,8 @@ public class WBStatusFragment extends Fragment {
 
         binding.llAccess.setOnClickListener(v -> {
 
-            if (Utils.appInstalledOrNot(Objects.requireNonNull(getContext()), "com.whatsapp.w4b")) {
-                StorageManager sm = (StorageManager) Objects.requireNonNull(getActivity()).getSystemService(Context.STORAGE_SERVICE);
+            if (Utils.appInstalledOrNot(requireContext(), "com.whatsapp.w4b")) {
+                StorageManager sm = (StorageManager) requireActivity().getSystemService(Context.STORAGE_SERVICE);
 
                 Intent intent;
                 String statusDir = getWhatsappBusinessFolder();

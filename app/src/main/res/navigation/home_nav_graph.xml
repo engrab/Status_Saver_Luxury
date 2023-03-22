@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/whatsappFragment">
+
+    <fragment
+        android:id="@+id/whatsappFragment"
+        android:name="com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.WhatsappFragment"
+        android:label="fragment_whatsapp"
+        tools:layout="@layout/fragment_whatsapp" />
+    <fragment
+        android:id="@+id/WABusinessFragment"
+        android:name="com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.WABusinessFragment"
+        android:label="fragment_wabusiness"
+        tools:layout="@layout/fragment_wabusiness" />
+    <fragment
+        android:id="@+id/savedFragment"
+        android:name="com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.SavedFragment"
+        android:label="fragment_saved"
+        tools:layout="@layout/fragment_saved" />
+</navigation>

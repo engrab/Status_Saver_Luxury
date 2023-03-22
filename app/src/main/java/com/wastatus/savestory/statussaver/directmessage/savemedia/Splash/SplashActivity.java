@@ -9,6 +9,7 @@ import android.os.Handler;
 
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Util;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.activities.HomeActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.start.MainActivity;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -74,7 +75,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void gotoHomeScreen() {
-        Intent i = new Intent(SplashActivity.this, MainActivity.class);
+        Intent i = new Intent(SplashActivity.this, HomeActivity.class);
         startActivity(i);
         finish();
 

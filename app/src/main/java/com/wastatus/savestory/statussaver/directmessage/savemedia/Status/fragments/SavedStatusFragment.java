@@ -15,17 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.DownloadAdapter;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.listener.SaveListener;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.FragmentSavedStatusBinding;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.FragmentSavedBinding;
 
 public class SavedStatusFragment extends Fragment {
     private static final String TAG = "SavedStatusFragment";
     RecyclerView.LayoutManager mLayoutManager;
     DownloadAdapter mAdapter;
-    private FragmentSavedStatusBinding binding;
+    private FragmentSavedBinding binding;
 
 
     public View onCreateView(@NonNull LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle) {
-        binding = FragmentSavedStatusBinding.inflate(paramLayoutInflater, paramViewGroup, false);
+        binding = FragmentSavedBinding.inflate(paramLayoutInflater, paramViewGroup, false);
         View view = binding.getRoot();
         binding.rv.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getActivity(), 3);

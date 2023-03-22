@@ -31,13 +31,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.SavedStatusFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.WBStatusFragment;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.WAStatusFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activities.AsciiCategoryActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivityMainBinding;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.directChat.activities.ChatDirectActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.emoji.activities.TextToEmojiActivity;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.SavedFragment;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.WABusinessFragment;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.WhatsappFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.scan.ScanWhatsappActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.setting.SettingActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.activities.StylishFontsActivity;
@@ -427,11 +429,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public Fragment getItem(int position) {
             Fragment fragment = null;
             if (position == 0) {
-                fragment = new WAStatusFragment();
+                fragment = new WhatsappFragment();
             } else if (position == 1) {
-                fragment = new WBStatusFragment();
+                fragment = new WABusinessFragment();
             } else if (position == 2) {
-                fragment = new SavedStatusFragment();
+                fragment = new SavedFragment();
             }
             assert fragment != null;
             return fragment;
