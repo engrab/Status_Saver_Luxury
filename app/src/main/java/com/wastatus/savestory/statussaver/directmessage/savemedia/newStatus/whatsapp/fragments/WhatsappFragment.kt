@@ -22,13 +22,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils
-import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.adapters.SavedAdapter
-import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.SavedModel
-import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.SavedViewModel
-import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.WhatsappViewModel
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.adapters.WhatsappAdapter
 import java.io.File
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -38,7 +35,7 @@ class WhatsappFragment : Fragment() {
     private lateinit var rv:RecyclerView
     private lateinit var allowAccess:LinearLayout
     private lateinit var waAdapter: WhatsappAdapter
-    private lateinit var viewModel: WhatsappViewModel
+    private lateinit var viewModel: StatusViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,7 +46,12 @@ class WhatsappFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_whatsapp, container, false)
+        val view = inflater.inflate(R.layout.fragment_whatsapp, container, false)
+        viewModel = ViewModelProvider(this).get(StatusViewModel::class.java)
+        if (SharedPrefs.getWATree(activity) != "") {
+            loadData()
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,9 +62,9 @@ class WhatsappFragment : Fragment() {
         waAdapter = WhatsappAdapter(requireContext())
         rv.layoutManager = GridLayoutManager(requireContext(), 3)
         rv.adapter = waAdapter
-        viewModel = ViewModelProvider(this).get(WhatsappViewModel::class.java)
         viewModel.whatsappList.observe(viewLifecycleOwner){
-            waAdapter.setAdapter(it as ArrayList<SavedModel>)
+
+            waAdapter.setAdapter(it as ArrayList<StatusModel>)
             allowAccess.visibility = View.GONE
         }
 
@@ -104,13 +106,11 @@ class WhatsappFragment : Fragment() {
         }
 
 
-        if (SharedPrefs.getWATree(activity) != "") {
-            loadData()
-        }
+
     }
     fun loadData() {
 
-            viewModel.setWhatsappData(getFromSdcard())
+            viewModel.getWhatsappMedia(getFromSdcard())
     }
 
     private fun getFromSdcard(): Array<DocumentFile?>? {

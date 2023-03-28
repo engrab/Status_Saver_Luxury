@@ -3,17 +3,17 @@
 
 
     <item
-        android:id="@+id/actionWhatsapp"
+        android:id="@+id/whatsappFragment"
         android:icon="@drawable/ic_btm_whatsapp"
         android:title="WhatsApp" />
 
     <item
-        android:id="@+id/actionWhatsappB"
+        android:id="@+id/WABusinessFragment"
         android:icon="@drawable/ic_btm_wab"
         android:title="WA Business" />
 
     <item
-        android:id="@+id/actionSaved"
+        android:id="@+id/savedFragment"
         android:icon="@drawable/ic_saved"
         android:title="Saved" />
 </menu>

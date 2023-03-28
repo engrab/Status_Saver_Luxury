@@ -17,13 +17,13 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activit
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager
-import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.SavedModel
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
 
 class WABusinessAdapter(val context: Context) : RecyclerView.Adapter<WABusinessAdapter.ViewHolder>() {
-    private val mediaList = ArrayList<SavedModel>()
+    private val mediaList = ArrayList<StatusModel>()
     var path: String? = null
 
-    fun setAdapter(list: ArrayList<SavedModel>) {
+    fun setAdapter(list: ArrayList<StatusModel>) {
         mediaList.clear()
         mediaList.addAll(list)
         notifyDataSetChanged()
@@ -39,7 +39,7 @@ class WABusinessAdapter(val context: Context) : RecyclerView.Adapter<WABusinessA
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mediaData = mediaList[position]
         if (!Utils.getBack(
-                mediaData.filePath,
+                mediaData.name,
                 "((\\.mp4|\\.webm|\\.ogg|\\.mpK|\\.avi|\\.mkv|\\.flv|\\.mpg|\\.wmv|\\.vob|\\.ogv|\\.mov|\\.qt|\\.rm|\\.rmvb\\.|\\.asf|\\.m4p|\\.m4v|\\.mp2|\\.mpeg|\\.mpe|\\.mpv|\\.m2v|\\.3gp|\\.f4p|\\.f4a|\\.f4b|\\.f4v)$)"
             ).isEmpty()
         ) {
@@ -52,7 +52,7 @@ class WABusinessAdapter(val context: Context) : RecyclerView.Adapter<WABusinessA
         } else {
             holder.downloadIV.setImageResource(R.drawable.ic_baseline_download_24)
         }
-        Glide.with(context).load(mediaData.filePath).apply(
+        Glide.with(context).load(mediaData.path).apply(
             RequestOptions().optionalTransform(RoundedCorners(5))
         ).into(holder.imageView)
         holder.downloadIV.setOnClickListener { v: View? ->
@@ -69,8 +69,8 @@ class WABusinessAdapter(val context: Context) : RecyclerView.Adapter<WABusinessA
                 } else {
                     Utils.copyFileInSavedDir(
                         context,
-                        mediaData.filePath,
-                        mediaData.fileName
+                        mediaData.path,
+                        mediaData.name
                     )
                     Toast.makeText(context, "Media Download successfully!", Toast.LENGTH_LONG)
                         .show()
@@ -84,12 +84,12 @@ class WABusinessAdapter(val context: Context) : RecyclerView.Adapter<WABusinessA
             }
         }
 
-        holder.itemView.setOnClickListener {
+        holder.imageView.setOnClickListener {
             val intent = Intent(context, PreviewActivity::class.java)
-//            intent.putParcelableArrayListExtra("images", dataList)
+            intent.putParcelableArrayListExtra("images", mediaList)
             intent.putExtra("position", position)
             intent.putExtra("statusdownload", "status")
-            intent.putExtra("folderpath", mediaList[position].filePath)
+            intent.putExtra("folderpath", mediaList[position].name)
             intent.putExtra("pakage", "com.whatsapp")
             context.startActivity(intent)
         }

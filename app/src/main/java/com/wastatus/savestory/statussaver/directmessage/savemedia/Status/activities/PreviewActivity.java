@@ -23,6 +23,7 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.L
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivityPreviewBinding;
 import com.google.android.gms.ads.AdView;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 public class PreviewActivity extends AppCompatActivity {
 
     private ActivityPreviewBinding binding;
-    ArrayList<DataModel> imageList;
+    ArrayList<StatusModel> imageList;
     int position;
     AdView adView;
     String pakage;
@@ -58,7 +59,7 @@ public class PreviewActivity extends AppCompatActivity {
 
 
                         try {
-                            Utils.download(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getFilepath(), imageList.get(binding.viewPager.getCurrentItem()).getFilename());
+                            Utils.download(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getPath(), imageList.get(binding.viewPager.getCurrentItem()).getName());
                             Toast.makeText(PreviewActivity.this, "Status saved successfully", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             Toast.makeText(PreviewActivity.this, "Sorry we can't move file.try with other file.", Toast.LENGTH_LONG).show();
@@ -72,7 +73,7 @@ public class PreviewActivity extends AppCompatActivity {
 
 
                     if (imageList.size() > 0) {
-                        Utils.repostOnWhatsapp(PreviewActivity.this, Utils.isVideoFile(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getFilepath()), imageList.get(binding.viewPager.getCurrentItem()).getFilepath(), pakage);
+                        Utils.repostOnWhatsapp(PreviewActivity.this, Utils.isVideoFile(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getPath()), imageList.get(binding.viewPager.getCurrentItem()).getPath(), pakage);
                     } else {
                         finish();
                     }
@@ -81,7 +82,7 @@ public class PreviewActivity extends AppCompatActivity {
 
                 case R.id.llShare:
                     if (imageList.size() > 0) {
-                        Utils.shareFile(PreviewActivity.this, Utils.isVideoFile(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getFilepath()), imageList.get(binding.viewPager.getCurrentItem()).getFilepath());
+                        Utils.shareFile(PreviewActivity.this, Utils.isVideoFile(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getPath()), imageList.get(binding.viewPager.getCurrentItem()).getPath());
                     } else {
                         finish();
                     }
@@ -99,13 +100,13 @@ public class PreviewActivity extends AppCompatActivity {
                                 int currentItem = 0;
 
                                 if (path.equals("download")) {
-                                    File file = new File(imageList.get(binding.viewPager.getCurrentItem()).getFilepath());
+                                    File file = new File(imageList.get(binding.viewPager.getCurrentItem()).getPath());
                                     if (file.exists()) {
                                         boolean del = file.delete();
                                         delete(currentItem);
                                     }
                                 } else {
-                                    DocumentFile fromTreeUri = DocumentFile.fromSingleUri(PreviewActivity.this, Uri.parse(imageList.get(binding.viewPager.getCurrentItem()).getFilepath()));
+                                    DocumentFile fromTreeUri = DocumentFile.fromSingleUri(PreviewActivity.this, Uri.parse(imageList.get(binding.viewPager.getCurrentItem()).getPath()));
                                     if (fromTreeUri.exists()) {
                                         boolean del = fromTreeUri.delete();
                                         delete(currentItem);

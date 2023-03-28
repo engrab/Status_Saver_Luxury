@@ -14,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,10 +22,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils
-import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.SavedModel
-import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.SavedViewModel
-import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.WABusinessViewModel
-import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.adapters.SavedAdapter
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.adapters.WABusinessAdapter
 import java.io.File
 import java.util.*
@@ -38,14 +35,22 @@ class WABusinessFragment : Fragment() {
     private lateinit var rv: RecyclerView
     private lateinit var allowAccess: LinearLayout
     private lateinit var waAdapter: WABusinessAdapter
-    private lateinit var viewModel: WABusinessViewModel
+    private lateinit var viewModel: StatusViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wabusiness, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_wabusiness, container, false)
+        viewModel = ViewModelProvider(this).get(StatusViewModel::class.java)
+
+        if (SharedPrefs.getWATree(activity) != "") {
+            loadData()
+        }
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,9 +61,9 @@ class WABusinessFragment : Fragment() {
         waAdapter = WABusinessAdapter(requireContext())
         rv.layoutManager = GridLayoutManager(requireContext(), 3)
         rv.adapter = waAdapter
-        viewModel = ViewModelProvider(this).get(WABusinessViewModel::class.java)
         viewModel.waBusinessList.observe(viewLifecycleOwner) {
-            waAdapter.setAdapter(it as ArrayList<SavedModel>)
+
+            waAdapter.setAdapter(it as ArrayList<StatusModel>)
             allowAccess.visibility = View.GONE
         }
 
@@ -100,14 +105,12 @@ class WABusinessFragment : Fragment() {
         }
 
 
-        if (SharedPrefs.getWATree(activity) != "") {
-            loadData()
-        }
+
     }
 
     fun loadData() {
 
-        viewModel.setWhatsappData(getFromSdcard())
+        viewModel.getWhatsappBusinessMedia(getFromSdcard())
     }
 
     private fun getFromSdcard(): Array<DocumentFile?>? {

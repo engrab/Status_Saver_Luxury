@@ -29,8 +29,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.SavedStatusFragment;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.fragments.WBStatusFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activities.AsciiCategoryActivity;
@@ -94,8 +92,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewpagerAndBottomNav();
 
         if (savedInstanceState == null) {
-            binding.appBarMain.bottomNavigation.setSelectedItemId(R.id.actionWhatsapp);
-            binding.navView.setCheckedItem(R.id.actionWhatsapp);
+            binding.appBarMain.bottomNavigation.setSelectedItemId(R.id.whatsappFragment);
+            binding.navView.setCheckedItem(R.id.whatsappFragment);
 
         }
 
@@ -173,27 +171,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        binding.appBarMain.bottomNavigation.getMenu().findItem(R.id.actionWhatsapp).setChecked(true);
+                        binding.appBarMain.bottomNavigation.getMenu().findItem(R.id.whatsappFragment).setChecked(true);
 
-                        binding.navView.getMenu().findItem(R.id.actionWhatsapp).setChecked(true);
-                        binding.navView.getMenu().findItem(R.id.actionWhatsappB).setChecked(false);
-                        binding.navView.getMenu().findItem(R.id.actionSaved).setChecked(false);
+                        binding.navView.getMenu().findItem(R.id.whatsappFragment).setChecked(true);
+                        binding.navView.getMenu().findItem(R.id.WABusinessFragment).setChecked(false);
+                        binding.navView.getMenu().findItem(R.id.savedFragment).setChecked(false);
 
                         break;
                     case 1:
-                        binding.appBarMain.bottomNavigation.getMenu().findItem(R.id.actionWhatsappB).setChecked(true);
+                        binding.appBarMain.bottomNavigation.getMenu().findItem(R.id.WABusinessFragment).setChecked(true);
 
-                        binding.navView.getMenu().findItem(R.id.actionWhatsappB).setChecked(true);
-                        binding.navView.getMenu().findItem(R.id.actionWhatsapp).setChecked(false);
-                        binding.navView.getMenu().findItem(R.id.actionSaved).setChecked(false);
+                        binding.navView.getMenu().findItem(R.id.WABusinessFragment).setChecked(true);
+                        binding.navView.getMenu().findItem(R.id.whatsappFragment).setChecked(false);
+                        binding.navView.getMenu().findItem(R.id.savedFragment).setChecked(false);
                         break;
 
                     case 2:
-                        binding.appBarMain.bottomNavigation.getMenu().findItem(R.id.actionSaved).setChecked(true);
+                        binding.appBarMain.bottomNavigation.getMenu().findItem(R.id.savedFragment).setChecked(true);
 
-                        binding.navView.getMenu().findItem(R.id.actionSaved).setChecked(true);
-                        binding.navView.getMenu().findItem(R.id.actionWhatsappB).setChecked(false);
-                        binding.navView.getMenu().findItem(R.id.actionWhatsapp).setChecked(false);
+                        binding.navView.getMenu().findItem(R.id.savedFragment).setChecked(true);
+                        binding.navView.getMenu().findItem(R.id.WABusinessFragment).setChecked(false);
+                        binding.navView.getMenu().findItem(R.id.whatsappFragment).setChecked(false);
                         break;
 
 
@@ -321,15 +319,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.drawerLayout.closeDrawers();
         switch (item.getItemId()) {
 
-            case R.id.actionWhatsapp:
+            case R.id.whatsappFragment:
 
                 binding.appBarMain.viewPager.setCurrentItem(0);
                 return true;
-            case R.id.actionWhatsappB:
+            case R.id.WABusinessFragment:
 
                 binding.appBarMain.viewPager.setCurrentItem(1);
                 return true;
-            case R.id.actionSaved:
+            case R.id.savedFragment:
 
                 binding.appBarMain.viewPager.setCurrentItem(2);
                 return true;

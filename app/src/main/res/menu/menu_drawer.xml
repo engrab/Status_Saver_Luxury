@@ -3,30 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group
-        android:id="@+id/groupHome"
-        android:checkableBehavior="single">
-        <item android:title="Home">
-            <menu>
-                <item
-                    android:id="@+id/actionWhatsapp"
-                    android:icon="@drawable/ic_btm_whatsapp"
-                    android:title="WhatsApp" />
-
-                <item
-                    android:id="@+id/actionWhatsappB"
-                    android:icon="@drawable/ic_btm_wab"
-                    android:title="WA Business" />
-
-                <item
-                    android:id="@+id/actionSaved"
-                    android:icon="@drawable/ic_saved"
-                    android:title="Saved" />
-
-
-            </menu>
-        </item>
-    </group>
 
     <group
         android:id="@+id/groupFeatures"

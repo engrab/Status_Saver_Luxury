@@ -14,17 +14,17 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.bumptech.glide.Glide;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activities.VideoPreviewActivity;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel;
 
 import java.util.ArrayList;
 
 public class PreviewPagerAdapter extends PagerAdapter {
     Activity activity;
-    ArrayList<DataModel> imageList;
+    ArrayList<StatusModel> imageList;
 
-    public PreviewPagerAdapter(Activity activity, ArrayList<DataModel> imageList) {
+    public PreviewPagerAdapter(Activity activity, ArrayList<StatusModel> imageList) {
         this.activity = activity;
         this.imageList = imageList;
     }
@@ -37,19 +37,19 @@ public class PreviewPagerAdapter extends PagerAdapter {
         ImageView imageView = itemView.findViewById(R.id.imageView);
         ImageView ivPlay = itemView.findViewById(R.id.ivPlay);
 
-        if (!Utils.getBack(imageList.get(position).getFilepath(), "((\\.mp4|\\.webm|\\.ogg|\\.mpK|\\.avi|\\.mkv|\\.flv|\\.mpg|\\.wmv|\\.vob|\\.ogv|\\.mov|\\.qt|\\.rm|\\.rmvb\\.|\\.asf|\\.m4p|\\.m4v|\\.mp2|\\.mpeg|\\.mpe|\\.mpv|\\.m2v|\\.3gp|\\.f4p|\\.f4a|\\.f4b|\\.f4v)$)").isEmpty()) {
+        if (!Utils.getBack(imageList.get(position).getPath(), "((\\.mp4|\\.webm|\\.ogg|\\.mpK|\\.avi|\\.mkv|\\.flv|\\.mpg|\\.wmv|\\.vob|\\.ogv|\\.mov|\\.qt|\\.rm|\\.rmvb\\.|\\.asf|\\.m4p|\\.m4v|\\.mp2|\\.mpeg|\\.mpe|\\.mpv|\\.m2v|\\.3gp|\\.f4p|\\.f4a|\\.f4b|\\.f4v)$)").isEmpty()) {
             ivPlay.setVisibility(View.VISIBLE);
         } else {
             ivPlay.setVisibility(View.GONE);
         }
 
-        Glide.with(this.activity).load(imageList.get(position).getFilepath()).into(imageView);
+        Glide.with(this.activity).load(imageList.get(position).getPath()).into(imageView);
 
         imageView.setOnClickListener(view -> {
-            if (!Utils.getBack(imageList.get(position).getFilepath(), "((\\.mp4|\\.webm|\\.ogg|\\.mpK|\\.avi|\\.mkv|\\.flv|\\.mpg|\\.wmv|\\.vob|\\.ogv|\\.mov|\\.qt|\\.rm|\\.rmvb\\.|\\.asf|\\.m4p|\\.m4v|\\.mp2|\\.mpeg|\\.mpe|\\.mpv|\\.m2v|\\.3gp|\\.f4p|\\.f4a|\\.f4b|\\.f4v)$)").isEmpty()) {
+            if (!Utils.getBack(imageList.get(position).getPath(), "((\\.mp4|\\.webm|\\.ogg|\\.mpK|\\.avi|\\.mkv|\\.flv|\\.mpg|\\.wmv|\\.vob|\\.ogv|\\.mov|\\.qt|\\.rm|\\.rmvb\\.|\\.asf|\\.m4p|\\.m4v|\\.mp2|\\.mpeg|\\.mpe|\\.mpv|\\.m2v|\\.3gp|\\.f4p|\\.f4a|\\.f4b|\\.f4v)$)").isEmpty()) {
 
                 Intent intent = new Intent(activity, VideoPreviewActivity.class);
-                intent.putExtra("videoPath", imageList.get(position).getFilepath());
+                intent.putExtra("videoPath", imageList.get(position).getPath());
 
 
                 if (AdmobAdsManager.isAdmob) {
