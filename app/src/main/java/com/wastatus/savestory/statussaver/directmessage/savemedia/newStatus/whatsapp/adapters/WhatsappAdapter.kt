@@ -60,6 +60,7 @@ class WhatsappAdapter(val context: Context) : RecyclerView.Adapter<WhatsappAdapt
                 Toast.makeText(context, "Media Already Downloaded", Toast.LENGTH_LONG).show()
             } else {
                 if (SharedPrefs.getAutoSave(context)) {
+
                     Utils.saveWAData(context)
                     for (i in mediaList.indices) {
                         mediaList[i].isSaved = true

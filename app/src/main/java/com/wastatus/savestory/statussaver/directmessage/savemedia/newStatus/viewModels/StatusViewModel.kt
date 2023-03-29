@@ -1,9 +1,9 @@
 package com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels
 
-import android.app.Application
+import android.content.Context
 import androidx.documentfile.provider.DocumentFile
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
@@ -12,7 +12,7 @@ import org.apache.commons.io.comparator.LastModifiedFileComparator
 import java.io.File
 import java.util.*
 
-class StatusViewModel(application: Application) : AndroidViewModel(application) {
+class StatusViewModel : ViewModel() {
 
     // status
     val savedList = MutableLiveData<List<StatusModel>>()
@@ -21,7 +21,7 @@ class StatusViewModel(application: Application) : AndroidViewModel(application) 
     // whatsapp
 
     val whatsappList = MutableLiveData<List<StatusModel>>()
-    private val whatsappItemList = mutableListOf<StatusModel>()
+     private val whatsappItemList = mutableListOf<StatusModel>()
 
     // whatsapp business
 
@@ -30,12 +30,14 @@ class StatusViewModel(application: Application) : AndroidViewModel(application) 
 
     init {
         viewModelScope.launch {
-            getMedia()
+            getSavedMedia()
         }
     }
 
 
-    fun getMedia() {
+
+
+    fun getSavedMedia() {
         val file = Utils.downloadWhatsAppDir
         if (!file.isDirectory) {
             return
@@ -51,6 +53,7 @@ class StatusViewModel(application: Application) : AndroidViewModel(application) 
 
             }
         }
+
         savedList.postValue(savedItemList)
     }
 
@@ -68,25 +71,16 @@ class StatusViewModel(application: Application) : AndroidViewModel(application) 
                     )
                 }
             }
+
             savedList.postValue(savedItemList)
         }
 
 
     }
-    fun dirListByAscendingDate(folder: File): Array<File?>? {
-        if (!folder.isDirectory) {
-            return null
-        }
-        val sortedByDate = folder.listFiles()
-        if (sortedByDate == null || sortedByDate.size <= 1) {
-            return sortedByDate
-        }
-        Arrays.sort(sortedByDate, LastModifiedFileComparator.LASTMODIFIED_REVERSE)
-        return sortedByDate
-    }
 
 
-     fun getWhatsappBusinessMedia(list: Array<DocumentFile?>?) {
+
+    fun getWhatsappBusinessMedia(list: Array<DocumentFile?>?) {
 
         if (list != null && list.isNotEmpty()) {
             for (i in list.indices) {
@@ -100,6 +94,7 @@ class StatusViewModel(application: Application) : AndroidViewModel(application) 
                     )
                 }
             }
+            compareWhatsappBusiness()
             waBusinessList.postValue(waBusinessItemList)
         }
 
@@ -121,10 +116,57 @@ class StatusViewModel(application: Application) : AndroidViewModel(application) 
                     )
                 }
             }
+            compareWhatsapp()
             whatsappList.postValue(whatsappItemList)
         }
 
 
+    }
+
+    private fun compareWhatsapp( ) {
+
+        if (whatsappItemList.size > 0 && savedItemList.size>0){
+
+            for (i in whatsappItemList.indices) {
+                for (j in savedItemList.indices) {
+                    if (whatsappItemList[i].name == savedItemList[j].name) {
+                        whatsappItemList[i].isSaved =
+                            true
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    private fun compareWhatsappBusiness( ) {
+
+        if (waBusinessItemList.size > 0 && savedItemList.size>0){
+
+            for (i in waBusinessItemList.indices) {
+                for (j in savedItemList.indices) {
+                    if (waBusinessItemList[i].name == savedItemList[j].name) {
+                        waBusinessItemList[i].isSaved =
+                            true
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    fun dirListByAscendingDate(folder: File): Array<File?>? {
+        if (!folder.isDirectory) {
+            return null
+        }
+        val sortedByDate = folder.listFiles()
+        if (sortedByDate == null || sortedByDate.size <= 1) {
+            return sortedByDate
+        }
+        Arrays.sort(sortedByDate, LastModifiedFileComparator.LASTMODIFIED_REVERSE)
+        return sortedByDate
     }
 }
 

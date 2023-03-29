@@ -12,6 +12,7 @@ public class SharedPrefs {
     public static final String WA_TREE_URI = "wa_tree_uri";
     public static final String WB_TREE_URI = "wb_tree_uri";
     public static final String AUTO_SAVE = "auto_save";
+    public static final String NOTIFY = "notify";
 
     private static SharedPreferences getInstance(Context context) {
         if (mPreferences == null) {
@@ -59,5 +60,12 @@ public class SharedPrefs {
 
     public static Boolean getAutoSave(Context context) {
         return getInstance(context).getBoolean(AUTO_SAVE, false);
+    }
+    public static void setNotify(Context context, Boolean value) {
+        getInstance(context).edit().putBoolean(NOTIFY, value).apply();
+    }
+
+    public static Boolean getNotify(Context context) {
+        return getInstance(context).getBoolean(NOTIFY, false);
     }
 }

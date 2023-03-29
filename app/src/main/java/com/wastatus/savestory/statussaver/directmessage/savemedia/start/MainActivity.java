@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -35,10 +36,12 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activiti
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivityMainBinding;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.directChat.activities.ChatDirectActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.emoji.activities.TextToEmojiActivity;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.fileObserve.MyFileObserver;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.SavedFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.WABusinessFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.WhatsappFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.scan.ScanWhatsappActivity;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.service.WhatsappService;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.setting.SettingActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.activities.StylishFontsActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.textRepeater.activities.TextRepeaterActivity;
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     AdView adView;
     String[] permissionsList = new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    //    private MyFileObserver fileObserver;
+        private MyFileObserver fileObserver;
     File file;
     private ActivityMainBinding binding;
 
@@ -80,11 +83,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            fileObserver = new MyFileObserver(filePath, getApplicationContext());
 //            fileObserver.startWatching();
 //        }
-//        if (Utils.appInstalledOrNot(this, "com.whatsapp")) {
-//            String filePath = getWhatsappFolder();
-//            fileObserver = new MyFileObserver(filePath, getApplicationContext());
-//            fileObserver.startWatching();
-//        }
+        if (Utils.appInstalledOrNot(this, "com.whatsapp")) {
+            String filePath = getWhatsappFolder();
+
+            fileObserver = new MyFileObserver(filePath, getApplicationContext());
+            fileObserver.startWatching();
+
+        }
 //        FirebaseApp.initializeApp(this);
 //
 //        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);

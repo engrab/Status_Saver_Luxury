@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,7 @@ class SavedFragment : Fragment() {
 
     private lateinit var rv: RecyclerView
     private lateinit var waAdapter: SavedAdapter
-    private lateinit var viewModel: StatusViewModel
+     val viewModel: StatusViewModel by activityViewModels()
     private lateinit var isEmptyList: LinearLayout
 
     override fun onCreateView(
@@ -40,7 +41,6 @@ class SavedFragment : Fragment() {
         waAdapter = SavedAdapter(requireContext())
         rv.layoutManager = GridLayoutManager(requireContext(), 3)
         rv.adapter = waAdapter
-        viewModel = ViewModelProvider(this).get(StatusViewModel::class.java)
 
         viewModel.savedList.observe(viewLifecycleOwner) {
             it.reversed()

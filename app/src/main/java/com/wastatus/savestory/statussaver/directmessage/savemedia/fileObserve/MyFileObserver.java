@@ -2,6 +2,7 @@ package com.wastatus.savestory.statussaver.directmessage.savemedia.fileObserve;
 
 import android.content.Context;
 import android.os.FileObserver;
+import android.util.Log;
 
 import com.wastatus.savestory.statussaver.directmessage.savemedia.noti.MyNotification;
 
@@ -17,7 +18,8 @@ public class MyFileObserver extends FileObserver {
 
     @Override
     public void onEvent(int event, String path) {
-        if (event == FileObserver.MODIFY) {
+        if (event == FileObserver.CREATE) {
+            Log.d("TAG", "onEvent: ");
             myNotification.showNotification("File Modified", "The file at " + path + " has been modified.");
         }
     }

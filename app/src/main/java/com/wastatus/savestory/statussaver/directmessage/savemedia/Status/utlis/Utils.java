@@ -14,9 +14,12 @@ import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -30,18 +33,21 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.D
 import org.apache.commons.io.comparator.LastModifiedFileComparator;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class Utils {
-
+    private static final String TAG = "Utils";
     public static File downloadWhatsAppDir = new File(Environment.getExternalStorageDirectory() + "/Download/WAStatus");
     public static ArrayList<DataModel> waList = new ArrayList<>();
     public static ArrayList<DataModel> wabList = new ArrayList<>();
@@ -327,5 +333,125 @@ public class Utils {
 
     public static boolean download(Context context, String sourceFile, String fileName) {
         return copyFileInSavedDir(context, sourceFile, fileName);
+    }
+
+    public void save(final String fileName, final Context context) {
+        String IMAGE,VIDEO;
+
+
+
+
+        if (Build.VERSION.SDK_INT >Build.VERSION_CODES.Q) {
+            VIDEO = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Video";
+        }
+        else {
+            VIDEO = Environment.getExternalStorageDirectory().getAbsolutePath()+"/WhatsApp/Media/WhatsApp Video";
+
+        }
+
+        if (Build.VERSION.SDK_INT >Build.VERSION_CODES.Q) {
+            IMAGE  = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images";
+        }
+        else {
+            IMAGE = Environment.getExternalStorageDirectory().getAbsolutePath()+"/WhatsApp/Media/WhatsApp Images";
+
+        }
+
+
+        final String[] ArrayFiles = {IMAGE, VIDEO};
+
+        new AsyncTask<Void, Void, Void>() {
+
+            public Void doInBackground(Void... voidArr) {
+
+                int index = 0;
+                if (fileName.endsWith(".jpg") || fileName.endsWith(".png") || fileName.endsWith(".jpeg")) {
+                    index = 0; // for image
+                } else if (fileName.endsWith(".mp4") || fileName.endsWith(".3gp") || fileName.endsWith(".mkv")) {
+                    index = 1;// for video
+                } else if (fileName.endsWith(".webp")) {
+                    index = 2;// for stickers
+                } else if (fileName.endsWith(".mp3")) {
+                    index = 4;// for audio
+                } else if (fileName.endsWith(".opus")) {
+                    index = 5;// for voice notes
+                } else {
+                    index = 3;// for documents
+                }
+
+                String str = "";
+                String str2 = "/";
+                String str3 = ".lock";
+                String str4 = "savefileslog";
+                try {
+                    if (ArrayFiles.length >= 0) {
+                        if (str.endsWith(str3)) {
+                            String substring = str.substring(1);
+                            str = substring.substring(0, substring.indexOf(str3));
+                        } else {
+                            str = fileName;
+                        }
+                        File externalStorageDirectory;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            externalStorageDirectory =context.getExternalFilesDir(null) ;
+                        }else {
+                            externalStorageDirectory = Environment.getExternalStorageDirectory();
+                        }
+                        StringBuilder sb = new StringBuilder();
+                        if (index == 5)// for voice notes only
+                        {
+                            Calendar calender = Calendar.getInstance();
+                            String weekNumber = String.format("%02d", calender.get(Calendar.WEEK_OF_YEAR));
+                            String Year = String.valueOf(calender.get(Calendar.YEAR));
+                            sb.append(ArrayFiles[index] + "/" + Year + weekNumber); // to get voice votes sub folder
+
+                        } else {
+                            sb.append(ArrayFiles[index]);
+                        }
+//                        sb.append(SaveFiles.ArrayFiles[0]);
+                        sb.append(str2);
+                        sb.append(str);
+                        File file = new File(sb.toString());
+                        if (file.exists()) {
+                            StringBuilder sb2 = new StringBuilder();
+                            sb2.append(context.getResources().getString(R.string.app_name));
+                            sb2.append("/.Cached Files");
+                            File file2 = new File(externalStorageDirectory, sb2.toString());
+                            if (!file2.exists()) {
+                                file2.mkdirs();
+                            }
+                            StringBuilder sb3 = new StringBuilder();
+                            sb3.append(file2.getAbsolutePath());
+                            sb3.append(str2);
+                            sb3.append(str);
+                            sb3.append(".cached");
+                            File file3 = new File(sb3.toString());
+                            if (!file3.exists()) {
+                                FileInputStream fileInputStream = new FileInputStream(file);
+                                FileOutputStream fileOutputStream = new FileOutputStream(file3);
+                                byte[] bArr = new byte[1024];
+                                while (true) {
+                                    int read = fileInputStream.read(bArr);
+                                    if (read <= 0) {
+                                        break;
+                                    }
+                                    fileOutputStream.write(bArr, 0, read);
+                                }
+                                fileInputStream.close();
+                                fileOutputStream.close();
+                            }
+                        } else {
+                            Log.d(TAG, "wa file not exists");
+                        }
+                    }
+                } catch (Exception e) {
+                    StringBuilder sb4 = new StringBuilder();
+                    sb4.append("copy error: ");
+                    sb4.append(e.toString());
+                    Log.d(TAG, sb4.toString());
+                }
+                return null;
+            }
+        }.execute();
     }
 }

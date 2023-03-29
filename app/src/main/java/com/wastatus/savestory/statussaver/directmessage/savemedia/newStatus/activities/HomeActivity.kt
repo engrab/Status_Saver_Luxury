@@ -1,21 +1,26 @@
 package com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.activities
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.documentfile.provider.DocumentFile
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R
+import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activities.AsciiCategoryActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.directChat.activities.ChatDirectActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.emoji.activities.TextToEmojiActivity
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel
 import com.wastatus.savestory.statussaver.directmessage.savemedia.scan.ScanWhatsappActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.setting.SettingActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.activities.StylishFontsActivity
@@ -27,10 +32,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var navView: NavigationView
+    private lateinit var viewModel: StatusViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        viewModel = ViewModelProvider(this).get(StatusViewModel::class.java)
+        loadData()
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         drawerLayout = findViewById(R.id.drawerLayout)
@@ -84,5 +93,45 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         }
         return true
+    }
+
+    fun loadData() {
+        if (getForWhatsappBusiness() != null){
+            viewModel.getWhatsappBusinessMedia(getForWhatsappBusiness())
+        }
+        if (getForWhatsapp() != null){
+            viewModel.getWhatsappMedia(getForWhatsapp())
+        }
+
+    }
+
+    private fun getForWhatsappBusiness(): Array<DocumentFile?>? {
+        val treeUri = SharedPrefs.getWBTree(this)
+        if (treeUri != ""){
+            val fromTreeUri = DocumentFile.fromTreeUri(applicationContext, Uri.parse(treeUri))
+            return if (fromTreeUri != null && fromTreeUri.exists() && fromTreeUri.isDirectory && fromTreeUri.canRead() && fromTreeUri.canWrite()) {
+                fromTreeUri.listFiles()
+            } else {
+                null
+            }
+        }
+        return null
+
+    }
+
+    private fun getForWhatsapp(): Array<DocumentFile?>? {
+        val treeUri = SharedPrefs.getWATree(this)
+        if (treeUri != "") {
+            val fromTreeUri =
+                DocumentFile.fromTreeUri(applicationContext, Uri.parse(treeUri))
+            return if (fromTreeUri != null && fromTreeUri.exists() && fromTreeUri.isDirectory
+                && fromTreeUri.canRead() && fromTreeUri.canWrite()
+            ) {
+                fromTreeUri.listFiles()
+            } else {
+                null
+            }
+        }
+        return null
     }
 }

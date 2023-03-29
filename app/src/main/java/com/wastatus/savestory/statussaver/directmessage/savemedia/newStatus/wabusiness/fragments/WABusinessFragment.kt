@@ -16,6 +16,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +36,7 @@ class WABusinessFragment : Fragment() {
     private lateinit var rv: RecyclerView
     private lateinit var allowAccess: LinearLayout
     private lateinit var waAdapter: WABusinessAdapter
-    private lateinit var viewModel: StatusViewModel
+    val viewModel: StatusViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,11 +45,10 @@ class WABusinessFragment : Fragment() {
         // Inflate the layout for this fragment
 
         val view = inflater.inflate(R.layout.fragment_wabusiness, container, false)
-        viewModel = ViewModelProvider(this).get(StatusViewModel::class.java)
 
-        if (SharedPrefs.getWATree(activity) != "") {
-            loadData()
-        }
+//        if (SharedPrefs.getWATree(activity) != "") {
+//            loadData()
+//        }
 
         return view
     }
@@ -58,7 +58,7 @@ class WABusinessFragment : Fragment() {
 
         rv = view.findViewById(R.id.rv)
         allowAccess = view.findViewById(R.id.llAccess)
-        waAdapter = WABusinessAdapter(requireContext())
+        waAdapter = WABusinessAdapter(requireContext(), viewModel)
         rv.layoutManager = GridLayoutManager(requireContext(), 3)
         rv.adapter = waAdapter
         viewModel.waBusinessList.observe(viewLifecycleOwner) {

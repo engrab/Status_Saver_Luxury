@@ -18,8 +18,9 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.S
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel
 
-class WABusinessAdapter(val context: Context) : RecyclerView.Adapter<WABusinessAdapter.ViewHolder>() {
+class WABusinessAdapter(val context: Context, private val statusViewModel: StatusViewModel) : RecyclerView.Adapter<WABusinessAdapter.ViewHolder>() {
     private val mediaList = ArrayList<StatusModel>()
     var path: String? = null
 
@@ -60,9 +61,7 @@ class WABusinessAdapter(val context: Context) : RecyclerView.Adapter<WABusinessA
                 Toast.makeText(context, "Media Already Downloaded", Toast.LENGTH_LONG).show()
             } else {
                 if (SharedPrefs.getAutoSave(context)) {
-                    Utils.saveWAData(
-                        context
-                    )
+                    Utils.saveWAData(context)
                     for (i in mediaList.indices) {
                         mediaList[i].isSaved = true
                     }

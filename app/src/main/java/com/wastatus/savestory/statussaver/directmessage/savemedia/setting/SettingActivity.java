@@ -1,7 +1,5 @@
 package com.wastatus.savestory.statussaver.directmessage.savemedia.setting;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -11,28 +9,30 @@ import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.ads.AdView;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivitySettingBinding;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.privacy.PrivacyActivity;
-import com.google.android.gms.ads.AdView;
 
 import java.util.Objects;
 
 public class SettingActivity extends AppCompatActivity {
 
+    AdView adView;
     private ActivitySettingBinding binding;
 
-    AdView adView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (AdmobAdsManager.isAdmob){
+        if (AdmobAdsManager.isAdmob) {
 
             adView = AdmobAdsManager.banner(this, binding.llAds);
         }
@@ -47,9 +47,8 @@ public class SettingActivity extends AppCompatActivity {
         getVersionName();
 
 
-
         binding.llShare.setOnClickListener(v -> {
-           shareApp();
+            shareApp();
         });
 
         binding.llRate.setOnClickListener(v -> {
@@ -69,9 +68,19 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+        binding.swNewNoti.setChecked(SharedPrefs.getNotify(SettingActivity.this));
+        binding.swNewNoti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                SharedPrefs.setNotify(SettingActivity.this, isChecked);
+            }
+        });
+
 
     }
-    private void shareApp(){
+
+    private void shareApp() {
         try {
             String text = "Download & Share with your friends\n https://play.google.com/store/apps/details?id=" + getPackageName();
             Intent txtIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -92,7 +101,7 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    private void goToPrivacy(){
+    private void goToPrivacy() {
         Intent intent = new Intent(SettingActivity.this, PrivacyActivity.class);
 
         if (AdmobAdsManager.isAdmob) {
@@ -103,11 +112,11 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    private void getVersionName(){
+    private void getVersionName() {
         try {
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             String version = pInfo.versionName;
-            binding.tvVersion.setText("Version: "+version);
+            binding.tvVersion.setText("Version: " + version);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -117,14 +126,14 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (adView != null){
+        if (adView != null) {
             adView.resume();
         }
     }
 
     @Override
     protected void onPause() {
-        if (adView != null){
+        if (adView != null) {
             adView.pause();
         }
         super.onPause();
@@ -132,7 +141,7 @@ public class SettingActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (adView != null){
+        if (adView != null) {
             adView.destroy();
         }
         super.onDestroy();

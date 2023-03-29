@@ -16,6 +16,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +36,7 @@ class WhatsappFragment : Fragment() {
     private lateinit var rv:RecyclerView
     private lateinit var allowAccess:LinearLayout
     private lateinit var waAdapter: WhatsappAdapter
-    private lateinit var viewModel: StatusViewModel
+    val viewModel: StatusViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,10 +48,9 @@ class WhatsappFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_whatsapp, container, false)
-        viewModel = ViewModelProvider(this).get(StatusViewModel::class.java)
-        if (SharedPrefs.getWATree(activity) != "") {
-            loadData()
-        }
+//        if (SharedPrefs.getWATree(activity) != "") {
+//            loadData()
+//        }
         return view
     }
 
