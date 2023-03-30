@@ -7,13 +7,13 @@ import androidx.lifecycle.MutableLiveData
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val hours = MutableLiveData<Int>()
+    private val days = MutableLiveData<Int>()
     init {
-        hours.value = 24
+        days.value = 1
     }
 
     fun getPeriodWork() : LiveData<Int> {
-        return hours
+        return days
     }
 
 

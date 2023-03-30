@@ -14,9 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
+import androidx.work.*
 import com.google.android.gms.ads.AdView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -153,19 +151,19 @@ class HomeActivity : AppCompatActivity() {
     private fun observeChanges() {
         if (SharedPrefs.getNotify(this)) {
 
-            mainViewModel.getPeriodWork().observe(this, Observer {
-                val periodWork = PeriodicWorkRequest.Builder(
-                    PeriodicBackgroundNotification::class.java, it.toLong(), TimeUnit.HOURS
-                )
-                    .addTag("periodic-pending-notification")
-                    .build()
 
-                WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                    "periodic-pending-notification",
-                    ExistingPeriodicWorkPolicy.REPLACE,
-                    periodWork
-                )
-            })
+            val sendLogsWorkRequest =
+                PeriodicWorkRequest.Builder(PeriodicBackgroundNotification::class.java, 24, TimeUnit.HOURS)
+                    .setConstraints(Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build()
+                    )
+                    .build()
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                "notify",
+                ExistingPeriodicWorkPolicy.REPLACE,
+                sendLogsWorkRequest
+            )
 
 
         }
