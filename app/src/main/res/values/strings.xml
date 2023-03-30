@@ -95,6 +95,7 @@
     <string name="noti_obserb">Notification Observer</string>
     <string name="new_status">New Status Notification</string>
     <string name="get_notified">Get notified when new statues available</string>
+    <string name="available_noti">New Status are available</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

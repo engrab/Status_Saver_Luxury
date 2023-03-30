@@ -9,15 +9,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.documentfile.provider.DocumentFile
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
+import androidx.work.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activities.AsciiCategoryActivity
+import com.wastatus.savestory.statussaver.directmessage.savemedia.autoNotify.MainViewModel
+import com.wastatus.savestory.statussaver.directmessage.savemedia.autoNotify.PeriodicBackgroundNotification
 import com.wastatus.savestory.statussaver.directmessage.savemedia.directChat.activities.ChatDirectActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.emoji.activities.TextToEmojiActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel
@@ -25,6 +30,7 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.scan.ScanWhats
 import com.wastatus.savestory.statussaver.directmessage.savemedia.setting.SettingActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.activities.StylishFontsActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.textRepeater.activities.TextRepeaterActivity
+import java.util.concurrent.TimeUnit
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var navController: NavController
@@ -33,11 +39,20 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var navView: NavigationView
     private lateinit var viewModel: StatusViewModel
+    private lateinit var mainViewModel: MainViewModel
+    private val constraints = Constraints.Builder()
+        .setRequiresBatteryNotLow(true)
+        .build()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+
+        observeChanges()
+
         viewModel = ViewModelProvider(this).get(StatusViewModel::class.java)
         loadData()
 
@@ -59,6 +74,19 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         bottomNavView.setupWithNavController(navController)
 //        navView.setupWithNavController(navController)
+
+    }
+
+    private fun observeChanges() {
+        mainViewModel.setPeriodWork().observe(this , Observer {
+            val periodWork = PeriodicWorkRequest.Builder(PeriodicBackgroundNotification::class.java,it.toLong(),
+                TimeUnit.DAYS)
+                .addTag("periodic-pending-notification")
+                .setConstraints(constraints)
+                .build()
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork("periodic-pending-notification", ExistingPeriodicWorkPolicy.KEEP, periodWork)
+        })
+
 
     }
 
