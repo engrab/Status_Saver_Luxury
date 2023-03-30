@@ -13,9 +13,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activities.PreviewActivity
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.activities.PreviewActivity
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.SharedPrefs
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.Utils
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.listener.DownloadClickListener
@@ -62,7 +62,7 @@ class WhatsappAdapter(val context: Context, private val listener:DownloadClickLi
             } else {
                 if (SharedPrefs.getAutoSave(context)) {
 
-                    Utils.saveWAData(context)
+
                     for (i in mediaList.indices) {
                         mediaList[i].isSaved = true
                         Utils.copyFileInSavedDir(

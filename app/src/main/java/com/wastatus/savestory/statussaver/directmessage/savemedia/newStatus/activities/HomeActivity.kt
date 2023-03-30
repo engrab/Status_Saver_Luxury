@@ -9,16 +9,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.documentfile.provider.DocumentFile
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
-import androidx.work.*
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.google.android.gms.ads.AdView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.FirebaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activities.AsciiCategoryActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.autoNotify.MainViewModel
@@ -26,10 +30,12 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.autoNotify.Per
 import com.wastatus.savestory.statussaver.directmessage.savemedia.directChat.activities.ChatDirectActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.emoji.activities.TextToEmojiActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.SharedPrefs
 import com.wastatus.savestory.statussaver.directmessage.savemedia.scan.ScanWhatsappActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.setting.SettingActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.activities.StylishFontsActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.textRepeater.activities.TextRepeaterActivity
+import java.util.concurrent.TimeUnit
 
 
 class HomeActivity : AppCompatActivity() {
@@ -40,7 +46,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var navView: NavigationView
     private lateinit var viewModel: StatusViewModel
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var adView:AdView
+    private lateinit var adView: AdView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,9 +58,9 @@ class HomeActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         observeChanges()
-        //        FirebaseApp.initializeApp(this);
-//
-//        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseApp.initializeApp(this)
+
+        FirebaseAnalytics.getInstance(this)
 
         viewModel = ViewModelProvider(this).get(StatusViewModel::class.java)
         loadData()
@@ -88,6 +94,7 @@ class HomeActivity : AppCompatActivity() {
         adView.pause()
         super.onPause()
     }
+
     override fun onDestroy() {
         adView.destroy()
         super.onDestroy()
@@ -98,12 +105,42 @@ class HomeActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { menuItem -> // Toggle the checked state of menuItem.
 
             when (menuItem.itemId) {
-                R.id.actionWhatsScan -> startActivity(Intent(this@HomeActivity, ScanWhatsappActivity::class.java))
-                R.id.actionDirectChat-> startActivity(Intent(this@HomeActivity, ChatDirectActivity::class.java))
-                R.id.actionAscii-> startActivity(Intent(this@HomeActivity, AsciiCategoryActivity::class.java))
-                R.id.actionStylishFont-> startActivity(Intent(this@HomeActivity, StylishFontsActivity::class.java))
-                R.id.actionTxtRepeater-> startActivity(Intent(this@HomeActivity, TextRepeaterActivity::class.java))
-                R.id.actionTxtEmoji-> startActivity(Intent(this@HomeActivity, TextToEmojiActivity::class.java))
+                R.id.actionWhatsScan -> startActivity(
+                    Intent(
+                        this@HomeActivity,
+                        ScanWhatsappActivity::class.java
+                    )
+                )
+                R.id.actionDirectChat -> startActivity(
+                    Intent(
+                        this@HomeActivity,
+                        ChatDirectActivity::class.java
+                    )
+                )
+                R.id.actionAscii -> startActivity(
+                    Intent(
+                        this@HomeActivity,
+                        AsciiCategoryActivity::class.java
+                    )
+                )
+                R.id.actionStylishFont -> startActivity(
+                    Intent(
+                        this@HomeActivity,
+                        StylishFontsActivity::class.java
+                    )
+                )
+                R.id.actionTxtRepeater -> startActivity(
+                    Intent(
+                        this@HomeActivity,
+                        TextRepeaterActivity::class.java
+                    )
+                )
+                R.id.actionTxtEmoji -> startActivity(
+                    Intent(
+                        this@HomeActivity,
+                        TextToEmojiActivity::class.java
+                    )
+                )
 
             }
 
@@ -113,31 +150,23 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-
     private fun observeChanges() {
         if (SharedPrefs.getNotify(this)) {
 
-//            mainViewModel.getPeriodWork().observe(this, Observer {
-//                val periodWork = PeriodicWorkRequest.Builder(
-//                    PeriodicBackgroundNotification::class.java, it.toLong(), TimeUnit.MINUTES)
-//                    .addTag("periodic-pending-notification")
-//                    .build()
-//
-//                WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-//                    "periodic-pending-notification",
-//                    ExistingPeriodicWorkPolicy.REPLACE,
-//                    periodWork
-//                )
-//            })
-
-                val periodWork = OneTimeWorkRequest.Builder(
-                    PeriodicBackgroundNotification::class.java)
+            mainViewModel.getPeriodWork().observe(this, Observer {
+                val periodWork = PeriodicWorkRequest.Builder(
+                    PeriodicBackgroundNotification::class.java, it.toLong(), TimeUnit.HOURS
+                )
                     .addTag("periodic-pending-notification")
                     .build()
 
-                WorkManager.getInstance(this).beginWith(
+                WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                    "periodic-pending-notification",
+                    ExistingPeriodicWorkPolicy.REPLACE,
                     periodWork
-                ).enqueue()
+                )
+            })
+
 
         }
 
@@ -153,8 +182,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
-            R.id.action_settings ->{
+        return when (item.itemId) {
+            R.id.action_settings -> {
                 startActivity(Intent(this@HomeActivity, SettingActivity::class.java))
                 return true
             }
@@ -164,10 +193,10 @@ class HomeActivity : AppCompatActivity() {
 
 
     fun loadData() {
-        if (getForWhatsappBusiness() != null){
+        if (getForWhatsappBusiness() != null) {
             viewModel.getWhatsappBusinessMedia(getForWhatsappBusiness())
         }
-        if (getForWhatsapp() != null){
+        if (getForWhatsapp() != null) {
             viewModel.getWhatsappMedia(getForWhatsapp())
         }
 
@@ -175,7 +204,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun getForWhatsappBusiness(): Array<DocumentFile?>? {
         val treeUri = SharedPrefs.getWBTree(this)
-        if (treeUri != ""){
+        if (treeUri != "") {
             val fromTreeUri = DocumentFile.fromTreeUri(applicationContext, Uri.parse(treeUri))
             return if (fromTreeUri != null && fromTreeUri.exists() && fromTreeUri.isDirectory && fromTreeUri.canRead() && fromTreeUri.canWrite()) {
                 fromTreeUri.listFiles()

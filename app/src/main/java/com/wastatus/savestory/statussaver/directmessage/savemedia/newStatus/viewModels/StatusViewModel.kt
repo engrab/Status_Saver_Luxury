@@ -1,11 +1,10 @@
 package com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels
 
-import android.content.Context
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.Utils
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
 import kotlinx.coroutines.launch
 import org.apache.commons.io.comparator.LastModifiedFileComparator

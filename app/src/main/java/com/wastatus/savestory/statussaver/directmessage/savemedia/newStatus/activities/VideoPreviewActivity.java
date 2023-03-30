@@ -1,4 +1,4 @@
-package com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activities;
+package com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.activities;
 
 import android.os.Bundle;
 import android.view.View;

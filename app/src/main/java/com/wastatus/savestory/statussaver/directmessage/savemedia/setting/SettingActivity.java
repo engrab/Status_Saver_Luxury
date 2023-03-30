@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.ads.AdView;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.SharedPrefs;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivitySettingBinding;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.privacy.PrivacyActivity;

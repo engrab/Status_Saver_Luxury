@@ -8,13 +8,11 @@ import com.google.android.gms.ads.MobileAds
 import com.onesignal.OneSignal
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobOpenAds
-import com.wastatus.savestory.statussaver.directmessage.savemedia.autoNotify.Constants.CHANNEL_ID_PERIOD_WORK
 
 class App : Application() {
     companion object {
 
 
-        const val channelId: String = "notification"
         private const val ONESIGNAL_APP_ID = "d751619d-fa4a-431b-bb4d-2692d2b6dbdc"
     }
 

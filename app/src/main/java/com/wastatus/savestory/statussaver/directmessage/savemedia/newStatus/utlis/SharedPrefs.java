@@ -1,4 +1,4 @@
-package com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis;
+package com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis;
 
 import android.content.Context;
 import android.content.SharedPreferences;

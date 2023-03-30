@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.Classes.Font;
 
 import java.util.ArrayList;

@@ -1,26 +1,15 @@
 package com.wastatus.savestory.statussaver.directmessage.savemedia.autoNotify
 
 object Constants {
-    const val CHANNEL_ID_PERIOD_WORK = "PERIODIC_APP_UPDATES"
 
 // Notification Channel constants
 
     // Name of Notification Channel for verbose notifications of background work
     @JvmField val VERBOSE_NOTIFICATION_CHANNEL_NAME: CharSequence =
-        "Verbose WorkManager Notifications"
+        "Reminder for Status"
     const val VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION =
-        "Shows notifications whenever work starts"
-    @JvmField val NOTIFICATION_TITLE: CharSequence = "WorkRequest Starting"
-    const val CHANNEL_ID = "VERBOSE_NOTIFICATION"
+        "Its time to save status"
+    const val CHANNEL_ID = "REMINDER_STATUS"
     const val NOTIFICATION_ID = 1
 
-    // The name of the image manipulation work
-    const val IMAGE_MANIPULATION_WORK_NAME = "image_manipulation_work"
-
-    // Other keys
-    const val OUTPUT_PATH = "blur_filter_outputs"
-    const val KEY_IMAGE_URI = "KEY_IMAGE_URI"
-    const val TAG_OUTPUT = "OUTPUT"
-
-    const val DELAY_TIME_MILLIS: Long = 3000
 }

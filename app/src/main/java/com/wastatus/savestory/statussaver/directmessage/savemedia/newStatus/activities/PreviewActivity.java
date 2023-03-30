@@ -1,26 +1,27 @@
-package com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activities;
+package com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters.PreviewPagerAdapter;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.model.DataModel;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.LayManager;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.adapters.PreviewPagerAdapter;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.listener.DownloadClickListener;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivityPreviewBinding;
 import com.google.android.gms.ads.AdView;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel;
@@ -35,6 +36,8 @@ public class PreviewActivity extends AppCompatActivity {
     int position;
     AdView adView;
     String pakage;
+    StatusViewModel viewModel;
+
 
 
     PreviewPagerAdapter previewPagerAdapter;
@@ -61,6 +64,7 @@ public class PreviewActivity extends AppCompatActivity {
                         try {
                             Utils.download(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getPath(), imageList.get(binding.viewPager.getCurrentItem()).getName());
                             Toast.makeText(PreviewActivity.this, "Status saved successfully", Toast.LENGTH_SHORT).show();
+                            viewModel.getSavedMedia();
                         } catch (Exception e) {
                             Toast.makeText(PreviewActivity.this, "Sorry we can't move file.try with other file.", Toast.LENGTH_LONG).show();
                         }
@@ -160,6 +164,9 @@ public class PreviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityPreviewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+        viewModel = new ViewModelProvider(this).get(StatusViewModel.class);
 
         binding.toolbar.setTitle(getString(R.string.info_status));
         setSupportActionBar(binding.toolbar);

@@ -1,4 +1,4 @@
-package com.wastatus.savestory.statussaver.directmessage.savemedia.Status.adapters;
+package com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,9 +13,10 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activities.VideoPreviewActivity;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.activities.VideoPreviewActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.listener.DownloadClickListener;
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.Utils;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel;
 
 import java.util.ArrayList;

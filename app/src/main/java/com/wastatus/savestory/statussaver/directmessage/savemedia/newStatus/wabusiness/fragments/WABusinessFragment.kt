@@ -17,12 +17,11 @@ import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs
-import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.SharedPrefs
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.Utils
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.listener.DownloadClickListener

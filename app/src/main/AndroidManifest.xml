@@ -32,14 +32,14 @@
         tools:targetApi="s">
         <activity
             android:name=".newStatus.activities.HomeActivity"
-            android:exported="true">
+            android:exported="true"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <service android:name=".service.WhatsappService"
-            android:enabled="true"
-            android:exported="true"/>
+
         <activity
             android:name=".setting.SettingActivity"
             android:exported="false"
@@ -57,11 +57,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.wastatus.savestory.statussaver.directmessage.savemedia.start.MainActivity"
-            android:exported="true"
-            android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme" />
+
         <activity
             android:name="com.wastatus.savestory.statussaver.directmessage.savemedia.privacy.PrivacyActivity"
             android:screenOrientation="fullSensor"
@@ -94,11 +90,11 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activities.PreviewActivity"
+            android:name="com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.activities.PreviewActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.wastatus.savestory.statussaver.directmessage.savemedia.Status.activities.VideoPreviewActivity"
+            android:name="com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.activities.VideoPreviewActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme" />
 
@@ -116,21 +112,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/app_id" />
 
-        <service
-            android:name=".service.NotifyListener"
-            android:exported="true"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".service.ServiceNotificationReader"
-            android:enabled="true"
-            android:exported="false"
-            android:stopWithTask="false" />
 
-        <service android:name=".service.StartGetting" />
     </application>
 
 </manifest>
