@@ -9,17 +9,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.documentfile.provider.DocumentFile
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import androidx.work.*
+import com.google.android.gms.ads.AdView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.SharedPrefs
+import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activities.AsciiCategoryActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.autoNotify.MainViewModel
 import com.wastatus.savestory.statussaver.directmessage.savemedia.autoNotify.PeriodicBackgroundNotification
@@ -30,9 +30,9 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.scan.ScanWhats
 import com.wastatus.savestory.statussaver.directmessage.savemedia.setting.SettingActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.activities.StylishFontsActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.textRepeater.activities.TextRepeaterActivity
-import java.util.concurrent.TimeUnit
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+class HomeActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfi: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
@@ -40,15 +40,21 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var navView: NavigationView
     private lateinit var viewModel: StatusViewModel
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var adView:AdView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        adView = AdmobAdsManager.banner(this, findViewById(R.id.llAds))
+
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         observeChanges()
+        //        FirebaseApp.initializeApp(this);
+//
+//        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         viewModel = ViewModelProvider(this).get(StatusViewModel::class.java)
         loadData()
@@ -72,7 +78,41 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         bottomNavView.setupWithNavController(navController)
 //        navView.setupWithNavController(navController)
 
+
+        setupClickListener()
+
+
     }
+
+    override fun onPause() {
+        adView.pause()
+        super.onPause()
+    }
+    override fun onDestroy() {
+        adView.destroy()
+        super.onDestroy()
+    }
+
+    private fun setupClickListener() {
+        // Set item click listener to perform action on menu item click.
+        navView.setNavigationItemSelectedListener { menuItem -> // Toggle the checked state of menuItem.
+
+            when (menuItem.itemId) {
+                R.id.actionWhatsScan -> startActivity(Intent(this@HomeActivity, ScanWhatsappActivity::class.java))
+                R.id.actionDirectChat-> startActivity(Intent(this@HomeActivity, ChatDirectActivity::class.java))
+                R.id.actionAscii-> startActivity(Intent(this@HomeActivity, AsciiCategoryActivity::class.java))
+                R.id.actionStylishFont-> startActivity(Intent(this@HomeActivity, StylishFontsActivity::class.java))
+                R.id.actionTxtRepeater-> startActivity(Intent(this@HomeActivity, TextRepeaterActivity::class.java))
+                R.id.actionTxtEmoji-> startActivity(Intent(this@HomeActivity, TextToEmojiActivity::class.java))
+
+            }
+
+            drawerLayout.closeDrawers()
+            true
+        }
+    }
+
+
 
     private fun observeChanges() {
         if (SharedPrefs.getNotify(this)) {
@@ -122,19 +162,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionWhatsScan -> startActivity(Intent(this@HomeActivity, ScanWhatsappActivity::class.java))
-            R.id.actionDirectChat-> startActivity(Intent(this@HomeActivity, ChatDirectActivity::class.java))
-            R.id.actionAscii-> startActivity(Intent(this@HomeActivity, AsciiCategoryActivity::class.java))
-            R.id.actionStylishFont-> startActivity(Intent(this@HomeActivity, StylishFontsActivity::class.java))
-            R.id.actionTxtRepeater-> startActivity(Intent(this@HomeActivity, TextRepeaterActivity::class.java))
-            R.id.actionTxtEmoji-> startActivity(Intent(this@HomeActivity, TextToEmojiActivity::class.java))
-
-
-        }
-        return true
-    }
 
     fun loadData() {
         if (getForWhatsappBusiness() != null){

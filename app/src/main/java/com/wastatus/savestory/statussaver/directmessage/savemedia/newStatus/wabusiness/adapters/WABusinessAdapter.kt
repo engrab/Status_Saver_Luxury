@@ -19,8 +19,9 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.U
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.listener.DownloadClickListener
 
-class WABusinessAdapter(val context: Context, private val statusViewModel: StatusViewModel) : RecyclerView.Adapter<WABusinessAdapter.ViewHolder>() {
+class WABusinessAdapter(val context: Context, private val listener: DownloadClickListener) : RecyclerView.Adapter<WABusinessAdapter.ViewHolder>() {
     private val mediaList = ArrayList<StatusModel>()
     var path: String? = null
 
@@ -64,6 +65,11 @@ class WABusinessAdapter(val context: Context, private val statusViewModel: Statu
                     Utils.saveWAData(context)
                     for (i in mediaList.indices) {
                         mediaList[i].isSaved = true
+                        Utils.copyFileInSavedDir(
+                            context,
+                            mediaList[i].path,
+                            mediaList[i].name
+                        )
                     }
                 } else {
                     Utils.copyFileInSavedDir(
@@ -76,6 +82,7 @@ class WABusinessAdapter(val context: Context, private val statusViewModel: Statu
                     holder.downloadIV.setImageResource(R.drawable.ic_baseline_check_24)
                     mediaList[position].isSaved = true
                 }
+                listener.downloadClick()
                 notifyDataSetChanged()
                 if (AdmobAdsManager.isAdmob) {
                     AdmobAdsManager.showInterAd(context as Activity?, null)

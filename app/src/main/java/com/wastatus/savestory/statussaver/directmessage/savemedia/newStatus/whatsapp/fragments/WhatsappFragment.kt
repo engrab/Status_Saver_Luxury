@@ -17,7 +17,6 @@ import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wastatus.savestory.statussaver.directmessage.savemedia.R
@@ -25,12 +24,13 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.S
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.listener.DownloadClickListener
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.adapters.WhatsappAdapter
 import java.io.File
 import kotlin.collections.ArrayList
 
 
-class WhatsappFragment : Fragment() {
+class WhatsappFragment : Fragment(), DownloadClickListener {
     private val REQUEST_ACTION_OPEN_DOCUMENT_TREE = 1001
 
     private lateinit var rv:RecyclerView
@@ -59,7 +59,7 @@ class WhatsappFragment : Fragment() {
 
         rv = view.findViewById(R.id.rv)
         allowAccess = view.findViewById(R.id.llAccess)
-        waAdapter = WhatsappAdapter(requireContext())
+        waAdapter = WhatsappAdapter(requireContext(), this)
         rv.layoutManager = GridLayoutManager(requireContext(), 3)
         rv.adapter = waAdapter
         viewModel.whatsappList.observe(viewLifecycleOwner){
@@ -154,6 +154,10 @@ class WhatsappFragment : Fragment() {
             SharedPrefs.setWATree(activity, uri.toString())
             loadData()
         }
+    }
+
+    override fun downloadClick() {
+        viewModel.getSavedMedia()
     }
 
 

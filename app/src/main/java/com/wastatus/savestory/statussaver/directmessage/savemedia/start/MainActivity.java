@@ -36,12 +36,10 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activiti
 import com.wastatus.savestory.statussaver.directmessage.savemedia.databinding.ActivityMainBinding;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.directChat.activities.ChatDirectActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.emoji.activities.TextToEmojiActivity;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.fileObserve.MyFileObserver;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.SavedFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.WABusinessFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments.WhatsappFragment;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.scan.ScanWhatsappActivity;
-import com.wastatus.savestory.statussaver.directmessage.savemedia.service.WhatsappService;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.setting.SettingActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.activities.StylishFontsActivity;
 import com.wastatus.savestory.statussaver.directmessage.savemedia.textRepeater.activities.TextRepeaterActivity;
@@ -55,8 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     AdView adView;
     String[] permissionsList = new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        private MyFileObserver fileObserver;
-    File file;
+
     private ActivityMainBinding binding;
 
     public static boolean checkPermissions(Context context, String... permissions) {
@@ -83,13 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            fileObserver = new MyFileObserver(filePath, getApplicationContext());
 //            fileObserver.startWatching();
 //        }
-        if (Utils.appInstalledOrNot(this, "com.whatsapp")) {
-            String filePath = getWhatsappFolder();
 
-            fileObserver = new MyFileObserver(filePath, getApplicationContext());
-            fileObserver.startWatching();
-
-        }
 //        FirebaseApp.initializeApp(this);
 //
 //        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);

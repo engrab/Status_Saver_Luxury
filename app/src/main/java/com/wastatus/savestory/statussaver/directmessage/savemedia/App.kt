@@ -20,7 +20,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        createNotificationChannel()
 
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
 
@@ -38,24 +37,6 @@ class App : Application() {
                     this@App
                 )
             }
-        }
-    }
-
-    private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channelPeriodic =
-                NotificationChannel(CHANNEL_ID_PERIOD_WORK, "Period Work Request", importance)
-            channelPeriodic.description = "Periodic Work"
-
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            val notificationManager = applicationContext.getSystemService(
-                NotificationManager::class.java
-            )
-            notificationManager!!.createNotificationChannel(channelPeriodic)
         }
     }
 }

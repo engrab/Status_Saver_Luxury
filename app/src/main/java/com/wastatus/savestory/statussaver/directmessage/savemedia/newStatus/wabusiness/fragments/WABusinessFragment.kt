@@ -25,12 +25,13 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.S
 import com.wastatus.savestory.statussaver.directmessage.savemedia.Status.utlis.Utils
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.listener.DownloadClickListener
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.adapters.WABusinessAdapter
 import java.io.File
 import java.util.*
 
 
-class WABusinessFragment : Fragment() {
+class WABusinessFragment : Fragment(), DownloadClickListener {
     private val REQUEST_ACTION_OPEN_DOCUMENT_TREE = 1001
 
     private lateinit var rv: RecyclerView
@@ -58,7 +59,7 @@ class WABusinessFragment : Fragment() {
 
         rv = view.findViewById(R.id.rv)
         allowAccess = view.findViewById(R.id.llAccess)
-        waAdapter = WABusinessAdapter(requireContext(), viewModel)
+        waAdapter = WABusinessAdapter(requireContext(), this)
         rv.layoutManager = GridLayoutManager(requireContext(), 3)
         rv.adapter = waAdapter
         viewModel.waBusinessList.observe(viewLifecycleOwner) {
@@ -155,6 +156,10 @@ class WABusinessFragment : Fragment() {
             SharedPrefs.setWBTree(activity, uri.toString())
             loadData()
         }
+    }
+
+    override fun downloadClick() {
+        viewModel.getSavedMedia()
     }
 
 
