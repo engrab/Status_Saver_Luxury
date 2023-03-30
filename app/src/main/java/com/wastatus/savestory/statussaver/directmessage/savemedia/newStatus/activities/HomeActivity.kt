@@ -40,16 +40,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var navView: NavigationView
     private lateinit var viewModel: StatusViewModel
     private lateinit var mainViewModel: MainViewModel
-    private val constraints = Constraints.Builder()
-        .setRequiresBatteryNotLow(true)
-        .build()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         observeChanges()
 
@@ -78,15 +75,31 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun observeChanges() {
-        mainViewModel.setPeriodWork().observe(this , Observer {
-            val periodWork = PeriodicWorkRequest.Builder(PeriodicBackgroundNotification::class.java,it.toLong(),
-                TimeUnit.DAYS)
-                .addTag("periodic-pending-notification")
-                .setConstraints(constraints)
-                .build()
-            WorkManager.getInstance(this).enqueueUniquePeriodicWork("periodic-pending-notification", ExistingPeriodicWorkPolicy.KEEP, periodWork)
-        })
+        if (SharedPrefs.getNotify(this)) {
 
+//            mainViewModel.getPeriodWork().observe(this, Observer {
+//                val periodWork = PeriodicWorkRequest.Builder(
+//                    PeriodicBackgroundNotification::class.java, it.toLong(), TimeUnit.MINUTES)
+//                    .addTag("periodic-pending-notification")
+//                    .build()
+//
+//                WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+//                    "periodic-pending-notification",
+//                    ExistingPeriodicWorkPolicy.REPLACE,
+//                    periodWork
+//                )
+//            })
+
+                val periodWork = OneTimeWorkRequest.Builder(
+                    PeriodicBackgroundNotification::class.java)
+                    .addTag("periodic-pending-notification")
+                    .build()
+
+                WorkManager.getInstance(this).beginWith(
+                    periodWork
+                ).enqueue()
+
+        }
 
     }
 

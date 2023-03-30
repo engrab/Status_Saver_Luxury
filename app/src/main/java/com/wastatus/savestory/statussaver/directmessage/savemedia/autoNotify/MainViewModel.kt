@@ -7,13 +7,13 @@ import androidx.lifecycle.MutableLiveData
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val time = MutableLiveData<Int>()
+    private val day = MutableLiveData<Int>()
     init {
-        time.value = 1
+        day.value = 1
     }
 
-    fun setPeriodWork() : LiveData<Int> {
-        return time
+    fun getPeriodWork() : LiveData<Int> {
+        return day
     }
 
 

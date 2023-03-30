@@ -102,7 +102,7 @@
                     android:id="@+id/swNewNoti"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:checked="false"
+                    android:checked="true"
                     app:trackTint="@color/switch_track_selector"
                     app:thumbTint="@color/switch_thumb_selector"
                     android:layout_height="wrap_content"

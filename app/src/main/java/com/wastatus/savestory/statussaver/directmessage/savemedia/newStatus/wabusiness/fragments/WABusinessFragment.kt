@@ -114,7 +114,7 @@ class WABusinessFragment : Fragment() {
     }
 
     private fun getFromSdcard(): Array<DocumentFile?>? {
-        val treeUri = SharedPrefs.getWATree(activity)
+        val treeUri = SharedPrefs.getWBTree(activity)
         val fromTreeUri =
             DocumentFile.fromTreeUri(requireContext().applicationContext, Uri.parse(treeUri))
         return if (fromTreeUri != null && fromTreeUri.exists() && fromTreeUri.isDirectory
@@ -152,7 +152,7 @@ class WABusinessFragment : Fragment() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            SharedPrefs.setWATree(activity, uri.toString())
+            SharedPrefs.setWBTree(activity, uri.toString())
             loadData()
         }
     }

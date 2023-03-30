@@ -68,7 +68,7 @@ public class SharedPrefs {
     }
 
     public static Boolean getNotify(Context context) {
-        return getInstance(context).getBoolean(NOTIFY, false);
+        return getInstance(context).getBoolean(NOTIFY, true);
     }
 
     public static void setReadTime(Context context, int value) {
