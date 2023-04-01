@@ -1,20 +1,22 @@
 package com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.activities
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
-import androidx.work.*
 import com.google.android.gms.ads.AdView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -24,7 +26,6 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.R
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ascii.activities.AsciiCategoryActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.autoNotify.MainViewModel
-import com.wastatus.savestory.statussaver.directmessage.savemedia.autoNotify.PeriodicBackgroundNotification
 import com.wastatus.savestory.statussaver.directmessage.savemedia.directChat.activities.ChatDirectActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.emoji.activities.TextToEmojiActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.viewModels.StatusViewModel
@@ -33,10 +34,10 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.scan.ScanWhats
 import com.wastatus.savestory.statussaver.directmessage.savemedia.setting.SettingActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.stylishFonts.activities.StylishFontsActivity
 import com.wastatus.savestory.statussaver.directmessage.savemedia.textRepeater.activities.TextRepeaterActivity
-import java.util.concurrent.TimeUnit
 
 
 class HomeActivity : AppCompatActivity() {
+    private val READ_WRITE_PERMISSION_CODE = 21
     private lateinit var navController: NavController
     private lateinit var appBarConfi: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
@@ -45,6 +46,10 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var viewModel: StatusViewModel
     private lateinit var mainViewModel: MainViewModel
     private lateinit var adView: AdView
+    var permissionsList = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +60,7 @@ class HomeActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        observeChanges()
+
         FirebaseApp.initializeApp(this)
 
         FirebaseAnalytics.getInstance(this)
@@ -84,10 +89,42 @@ class HomeActivity : AppCompatActivity() {
 
 
         setupClickListener()
+        if (!checkPermissions(this, *permissionsList)) {
+            ActivityCompat.requestPermissions(this, permissionsList, READ_WRITE_PERMISSION_CODE);
+        }else {
+            viewModel.getSavedMedia()
+        }
 
 
     }
-
+    fun checkPermissions(context: Context?, vararg permissions: String?): Boolean {
+        if (context != null) {
+            for (permission in permissions) {
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        permission!!
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == READ_WRITE_PERMISSION_CODE) {
+            if (!checkPermissions(this, *permissionsList)) {
+                ActivityCompat.requestPermissions(this, permissionsList, READ_WRITE_PERMISSION_CODE)
+            } else if (grantResults[0] == RESULT_OK) {
+                viewModel.getSavedMedia()
+            }
+        }
+    }
     override fun onPause() {
         adView.pause()
         super.onPause()
@@ -148,27 +185,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    private fun observeChanges() {
-        if (SharedPrefs.getNotify(this)) {
 
-
-            val sendLogsWorkRequest =
-                PeriodicWorkRequest.Builder(PeriodicBackgroundNotification::class.java, 24, TimeUnit.HOURS)
-                    .setConstraints(Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build()
-                    )
-                    .build()
-            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                "notify",
-                ExistingPeriodicWorkPolicy.REPLACE,
-                sendLogsWorkRequest
-            )
-
-
-        }
-
-    }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfi) || super.onSupportNavigateUp()

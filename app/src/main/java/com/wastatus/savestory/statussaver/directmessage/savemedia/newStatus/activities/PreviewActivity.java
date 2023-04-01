@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
@@ -28,6 +30,7 @@ import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.frag
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PreviewActivity extends AppCompatActivity {
 
@@ -37,7 +40,7 @@ public class PreviewActivity extends AppCompatActivity {
     AdView adView;
     String pakage;
     StatusViewModel viewModel;
-
+    int pos;
 
 
     PreviewPagerAdapter previewPagerAdapter;
@@ -46,6 +49,80 @@ public class PreviewActivity extends AppCompatActivity {
 
 
     String folderPath;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityPreviewBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
+        viewModel = new ViewModelProvider(this).get(StatusViewModel.class);
+
+
+        binding.toolbar.setTitle(getString(R.string.info_status));
+        setSupportActionBar(binding.toolbar);
+
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PreviewActivity.super.onBackPressed();
+            }
+        });
+
+
+
+
+        imageList = getIntent().getParcelableArrayListExtra("images");
+        position = getIntent().getIntExtra("position", 0);
+        path = getIntent().getStringExtra("statusdownload");
+        folderPath = getIntent().getStringExtra("folderpath");
+        pakage = getIntent().getStringExtra("pakage");
+
+        if (path.equals("download")) {
+
+            binding.llSave.setVisibility(View.GONE);
+            binding.llRepost.setVisibility(View.GONE);
+            binding.llDelete.setVisibility(View.VISIBLE);
+        } else {
+
+            binding.llSave.setVisibility(View.VISIBLE);
+        }
+
+        previewPagerAdapter = new PreviewPagerAdapter(PreviewActivity.this, imageList);
+        binding.viewPager.setAdapter(previewPagerAdapter);
+        binding.viewPager.setCurrentItem(position);
+        binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+
+                pos = position;
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        binding.llSave.setOnClickListener(clickListener);
+        binding.llShare.setOnClickListener(clickListener);
+        binding.llRepost.setOnClickListener(clickListener);
+        binding.llDelete.setOnClickListener(clickListener);
+
+        if (AdmobAdsManager.isAdmob) {
+
+            adView = AdmobAdsManager.banner(this, binding.llAds);
+        }
+
+    }
     private final View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -62,8 +139,14 @@ public class PreviewActivity extends AppCompatActivity {
 
 
                         try {
-                            Utils.download(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getPath(), imageList.get(binding.viewPager.getCurrentItem()).getName());
+                            Utils.copyFileInSavedDir(
+                                    PreviewActivity.this,
+                                    imageList.get(binding.viewPager.getCurrentItem()).getPath(),
+                                    imageList.get(binding.viewPager.getCurrentItem()).getName()
+                            );
+//                            Utils.download(PreviewActivity.this, imageList.get(binding.viewPager.getCurrentItem()).getName(), imageList.get(binding.viewPager.getCurrentItem()).getPath());
                             Toast.makeText(PreviewActivity.this, "Status saved successfully", Toast.LENGTH_SHORT).show();
+
                             viewModel.getSavedMedia();
                         } catch (Exception e) {
                             Toast.makeText(PreviewActivity.this, "Sorry we can't move file.try with other file.", Toast.LENGTH_LONG).show();
@@ -159,80 +242,6 @@ public class PreviewActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityPreviewBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-
-        viewModel = new ViewModelProvider(this).get(StatusViewModel.class);
-
-        binding.toolbar.setTitle(getString(R.string.info_status));
-        setSupportActionBar(binding.toolbar);
-
-        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PreviewActivity.super.onBackPressed();
-            }
-        });
-
-
-
-//        LinearLayout.LayoutParams btnParam = LayManager.setLinParams(PreviewActivity.this, 300, 100);
-//        binding.llSave.setLayoutParams(btnParam);
-//        binding.llShare.setLayoutParams(btnParam);
-//        binding.llDelete.setLayoutParams(btnParam);
-
-        imageList = getIntent().getParcelableArrayListExtra("images");
-        position = getIntent().getIntExtra("position", 0);
-        path = getIntent().getStringExtra("statusdownload");
-        folderPath = getIntent().getStringExtra("folderpath");
-        pakage = getIntent().getStringExtra("pakage");
-
-        if (path.equals("download")) {
-
-            binding.llSave.setVisibility(View.GONE);
-            binding.llRepost.setVisibility(View.GONE);
-            binding.llDelete.setVisibility(View.VISIBLE);
-        } else {
-
-            binding.llSave.setVisibility(View.VISIBLE);
-        }
-
-        previewPagerAdapter = new PreviewPagerAdapter(PreviewActivity.this, imageList);
-        binding.viewPager.setAdapter(previewPagerAdapter);
-        binding.viewPager.setCurrentItem(position);
-        binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        binding.llSave.setOnClickListener(clickListener);
-        binding.llShare.setOnClickListener(clickListener);
-        binding.llRepost.setOnClickListener(clickListener);
-        binding.llDelete.setOnClickListener(clickListener);
-
-        if (AdmobAdsManager.isAdmob) {
-
-            adView = AdmobAdsManager.banner(this, binding.llAds);
-        }
-
-    }
 
     @Override
     protected void onDestroy() {

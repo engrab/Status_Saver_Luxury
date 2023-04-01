@@ -1,5 +1,6 @@
 package com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,7 @@ class SavedFragment : Fragment() {
         viewModel.savedList.observe(viewLifecycleOwner) {
             it.reversed()
             waAdapter.setAdapter(it as ArrayList<StatusModel>)
+
             waAdapter.notifyDataSetChanged()
             if (it.size>0){
                 isEmptyList.visibility = View.GONE

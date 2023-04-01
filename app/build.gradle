@@ -86,8 +86,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation "androidx.lifecycle:lifecycle-runtime:2.5.1"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.5.1"
-    def work_version = "2.7.1"
-    implementation "androidx.work:work-runtime:$work_version"
+    def work_version = "2.8.1"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
 
     // Kotlin
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")

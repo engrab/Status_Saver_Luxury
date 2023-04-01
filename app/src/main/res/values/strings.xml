@@ -44,7 +44,7 @@
     <string name="downloading" translatable="false">"Please wait...Downloading Media"</string>
 
     <!--tiktok-->
-    <string name="info_status">Info Whatsapp Status</string>
+    <string name="info_status">Preview Status</string>
 
 
     <string name="search_hint">Search…</string>

@@ -1,13 +1,14 @@
 package com.wastatus.savestory.statussaver.directmessage.savemedia
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
+import androidx.work.*
 import com.google.android.gms.ads.MobileAds
 import com.onesignal.OneSignal
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobAdsManager
 import com.wastatus.savestory.statussaver.directmessage.savemedia.ads.AdmobOpenAds
+import com.wastatus.savestory.statussaver.directmessage.savemedia.autoNotify.PeriodicBackgroundNotification
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.SharedPrefs
+import java.util.concurrent.TimeUnit
 
 class App : Application() {
     companion object {
@@ -18,7 +19,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
+        observeChanges()
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
 
         // OneSignal Initialization
@@ -36,5 +37,29 @@ class App : Application() {
                 )
             }
         }
+    }
+
+    private fun observeChanges() {
+        if (SharedPrefs.getNotify(this)) {
+
+//            val periodic = PeriodicWorkRequestBuilder<PeriodicBackgroundNotification>(1, TimeUnit.DAYS)
+//                .setInitialDelay(1, TimeUnit.HOURS)
+//                .build()
+
+
+            val sendNotification =
+                PeriodicWorkRequest.Builder(PeriodicBackgroundNotification::class.java, 1, TimeUnit.DAYS)
+                    .setConstraints(
+                        Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build()
+                    )
+                    .build()
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork("notification",ExistingPeriodicWorkPolicy.UPDATE,sendNotification)
+
+
+
+        }
+
     }
 }

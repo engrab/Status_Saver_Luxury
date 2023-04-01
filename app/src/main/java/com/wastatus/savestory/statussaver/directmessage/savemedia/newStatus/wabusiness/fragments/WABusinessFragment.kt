@@ -108,6 +108,10 @@ class WABusinessFragment : Fragment(), DownloadClickListener {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
     fun loadData() {
 
         viewModel.getWhatsappBusinessMedia(getFromSdcard())
@@ -159,6 +163,7 @@ class WABusinessFragment : Fragment(), DownloadClickListener {
 
     override fun downloadClick() {
         viewModel.getSavedMedia()
+
     }
 
 

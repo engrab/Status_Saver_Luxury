@@ -4,56 +4,62 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.Utils
 import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.fragments.fragments.pojos.StatusModel
+import com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.utlis.Utils
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.apache.commons.io.comparator.LastModifiedFileComparator
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
 class StatusViewModel : ViewModel() {
 
     // status
+
+    private var _savedItemList = mutableListOf<StatusModel>()
     val savedList = MutableLiveData<List<StatusModel>>()
-    private val savedItemList = mutableListOf<StatusModel>()
 
     // whatsapp
 
+    private var _whatsappItemList = mutableListOf<StatusModel>()
     val whatsappList = MutableLiveData<List<StatusModel>>()
-     private val whatsappItemList = mutableListOf<StatusModel>()
 
     // whatsapp business
 
+    private var _waBusinessItemList = mutableListOf<StatusModel>()
     val waBusinessList = MutableLiveData<List<StatusModel>>()
-    private val waBusinessItemList = mutableListOf<StatusModel>()
-
-    init {
-        viewModelScope.launch {
-            getSavedMedia()
-        }
-    }
-
 
 
 
     fun getSavedMedia() {
-        val file = Utils.downloadWhatsAppDir
-        if (!file.isDirectory) {
-            return
-        }
-        val listMediaFiles = dirListByAscendingDate(file)
-        if (listMediaFiles != null) {
-            savedItemList.clear()
-            for (listMediaFile in listMediaFiles) {
+        viewModelScope.launch(Dispatchers.IO) {
 
-                if (listMediaFile != null) {
-                    savedItemList.add(StatusModel(listMediaFile.absolutePath, listMediaFile.name, true))
-                }
-
+            val file = Utils.downloadWhatsAppDir
+            if (!file.isDirectory) {
+                return@launch
             }
-        }
+            val listMediaFiles = dirListByAscendingDate(file)
+            if (listMediaFiles != null) {
+                _savedItemList.clear()
+                for (listMediaFile in listMediaFiles) {
 
-        savedList.postValue(savedItemList)
+                    if (listMediaFile != null) {
+
+                        _savedItemList.add(
+                            StatusModel(
+                                listMediaFile.absolutePath,
+                                listMediaFile.name,
+                                true
+                            )
+                        )
+                    }
+
+                }
+            }
+
+            savedList.postValue(_savedItemList)
+        }
     }
 
     fun saveMedia(list: Array<DocumentFile?>?) {
@@ -62,7 +68,7 @@ class StatusViewModel : ViewModel() {
             for (i in list.indices) {
                 if (!list[i]?.uri.toString().contains(".nomedia")) {
 
-                    savedItemList.add(
+                    _savedItemList.add(
                         StatusModel(
                             list.get(i)?.uri.toString(),
                             list.get(i)?.name, false
@@ -71,65 +77,81 @@ class StatusViewModel : ViewModel() {
                 }
             }
 
-            savedList.postValue(savedItemList)
+            savedList.postValue(_savedItemList)
         }
 
 
     }
+    fun saveWhatsappItem(position:Int){
 
+        _whatsappItemList.get(position).isSaved = true
+        whatsappList.postValue(_whatsappItemList)
+
+    }
+    fun saveWhatsappBusinessItem(position:Int){
+
+        _waBusinessItemList.get(position).isSaved = true
+        waBusinessList.postValue(_waBusinessItemList)
+    }
 
 
     fun getWhatsappBusinessMedia(list: Array<DocumentFile?>?) {
 
-        if (list != null && list.isNotEmpty()) {
-            for (i in list.indices) {
-                if (!list.get(i)?.uri.toString().contains(".nomedia")) {
+        viewModelScope.launch(Dispatchers.IO) {
 
-                    waBusinessItemList.add(
-                        StatusModel(
-                            list.get(i)?.uri.toString(),
-                            list.get(i)?.name, false
+            if (list != null && list.isNotEmpty()) {
+                _waBusinessItemList.clear()
+                for (i in list.indices) {
+                    if (!list.get(i)?.uri.toString().contains(".nomedia")) {
+
+                        _waBusinessItemList.add(
+                            StatusModel(
+                                list.get(i)?.uri.toString(),
+                                list.get(i)?.name, false
+                            )
                         )
-                    )
+                    }
                 }
+                compareWhatsappBusiness()
+                waBusinessList.postValue(_waBusinessItemList)
             }
-            compareWhatsappBusiness()
-            waBusinessList.postValue(waBusinessItemList)
         }
-
 
     }
 
 
     fun getWhatsappMedia(list: Array<DocumentFile?>?) {
 
-        if (list != null && list.size > 0) {
-            for (i in list.indices) {
-                if (!list.get(i)?.uri.toString().contains(".nomedia")) {
+        viewModelScope.launch(Dispatchers.IO) {
 
-                    whatsappItemList.add(
-                        StatusModel(
-                            list.get(i)?.uri.toString(),
-                            list.get(i)?.name, false
+            if (list != null && list.size > 0) {
+                _whatsappItemList.clear()
+                for (i in list.indices) {
+                    if (!list.get(i)?.uri.toString().contains(".nomedia")) {
+
+                        _whatsappItemList.add(
+                            StatusModel(
+                                list.get(i)?.uri.toString(),
+                                list.get(i)?.name, false
+                            )
                         )
-                    )
+                    }
                 }
+                compareWhatsapp()
+                whatsappList.postValue(_whatsappItemList)
             }
-            compareWhatsapp()
-            whatsappList.postValue(whatsappItemList)
+
         }
-
-
     }
 
-    private fun compareWhatsapp( ) {
+    private fun compareWhatsapp() {
 
-        if (whatsappItemList.size > 0 && savedItemList.size>0){
+        if (_whatsappItemList.size > 0 && _savedItemList.size > 0) {
 
-            for (i in whatsappItemList.indices) {
-                for (j in savedItemList.indices) {
-                    if (whatsappItemList[i].name == savedItemList[j].name) {
-                        whatsappItemList[i].isSaved =
+            for (i in _whatsappItemList.indices) {
+                for (j in _savedItemList.indices) {
+                    if (_whatsappItemList[i].name == _savedItemList[j].name) {
+                        _whatsappItemList[i].isSaved =
                             true
                     }
                 }
@@ -139,14 +161,14 @@ class StatusViewModel : ViewModel() {
 
     }
 
-    private fun compareWhatsappBusiness( ) {
+    private fun compareWhatsappBusiness() {
 
-        if (waBusinessItemList.size > 0 && savedItemList.size>0){
+        if (_waBusinessItemList.size > 0 && _savedItemList.size > 0) {
 
-            for (i in waBusinessItemList.indices) {
-                for (j in savedItemList.indices) {
-                    if (waBusinessItemList[i].name == savedItemList[j].name) {
-                        waBusinessItemList[i].isSaved =
+            for (i in _waBusinessItemList.indices) {
+                for (j in _savedItemList.indices) {
+                    if (_waBusinessItemList[i].name == _savedItemList[j].name) {
+                        _waBusinessItemList[i].isSaved =
                             true
                     }
                 }

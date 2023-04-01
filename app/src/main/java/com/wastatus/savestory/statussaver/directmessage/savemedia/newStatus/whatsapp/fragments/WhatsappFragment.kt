@@ -1,6 +1,7 @@
 package com.wastatus.savestory.statussaver.directmessage.savemedia.newStatus.whatsapp.viewModels.fragments
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -59,21 +60,19 @@ class WhatsappFragment : Fragment(), DownloadClickListener {
 
         rv = view.findViewById(R.id.rv)
         allowAccess = view.findViewById(R.id.llAccess)
+
         waAdapter = WhatsappAdapter(requireContext(), this)
         rv.layoutManager = GridLayoutManager(requireContext(), 3)
         rv.adapter = waAdapter
         viewModel.whatsappList.observe(viewLifecycleOwner){
-
-            waAdapter.setAdapter(it as ArrayList<StatusModel>)
             allowAccess.visibility = View.GONE
+            waAdapter.setAdapter(it as ArrayList<StatusModel>)
+
+
         }
 
-        view.findViewById<LinearLayout>(R.id.llAccess).setOnClickListener { v ->
-            if (Utils.appInstalledOrNot(
-                    requireContext(),
-                    "com.whatsapp"
-                )
-            ) {
+        allowAccess.setOnClickListener { v ->
+            if (Utils.appInstalledOrNot(requireContext(), "com.whatsapp")) {
                 val sm =
                     requireActivity().getSystemService(Context.STORAGE_SERVICE) as StorageManager
                 val intent: Intent
@@ -111,6 +110,11 @@ class WhatsappFragment : Fragment(), DownloadClickListener {
     fun loadData() {
 
             viewModel.getWhatsappMedia(getFromSdcard())
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 
     private fun getFromSdcard(): Array<DocumentFile?>? {
@@ -158,6 +162,7 @@ class WhatsappFragment : Fragment(), DownloadClickListener {
 
     override fun downloadClick() {
         viewModel.getSavedMedia()
+
     }
 
 

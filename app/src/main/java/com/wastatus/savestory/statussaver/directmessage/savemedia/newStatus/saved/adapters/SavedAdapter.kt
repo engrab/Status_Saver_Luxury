@@ -52,7 +52,7 @@ class SavedAdapter(val context: Context) : RecyclerView.Adapter<SavedAdapter.Vie
             val intent = Intent(context, PreviewActivity::class.java)
             intent.putParcelableArrayListExtra("images", mediaList)
             intent.putExtra("position", position)
-            intent.putExtra("statusdownload", "status")
+            intent.putExtra("statusdownload", "download")
             intent.putExtra("folderpath", mediaList[position].name)
             intent.putExtra("pakage", "com.whatsapp")
             context.startActivity(intent)

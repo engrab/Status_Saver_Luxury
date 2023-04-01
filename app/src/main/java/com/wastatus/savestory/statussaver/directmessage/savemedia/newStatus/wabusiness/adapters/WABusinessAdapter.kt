@@ -95,7 +95,7 @@ class WABusinessAdapter(val context: Context, private val listener: DownloadClic
             intent.putExtra("position", position)
             intent.putExtra("statusdownload", "status")
             intent.putExtra("folderpath", mediaList[position].name)
-            intent.putExtra("pakage", "com.whatsapp")
+            intent.putExtra("pakage", "com.whatsapp.w4b")
             context.startActivity(intent)
         }
     }
